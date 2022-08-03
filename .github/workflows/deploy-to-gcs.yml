@@ -20,10 +20,9 @@ jobs:
       - name: Build website
         run: npm run build
 
-      - name: Setup Google Cloud SDK
-        uses: svvsaga/github-actions-public/setup-gcloud@v11.0.0
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@9ec7761096e04c7578c72d1a11ef700a1292db4c
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_DOCS_TERRAFORM_PROD }}
         with:
-          service_account_key: ${{ secrets.GCP_SA_DOCS_TERRAFORM_PROD }}
-          
-      - name: Publish website
-        run: gsutil -m rsync -rd build gs://saga-docs-web
+          args: deploy
