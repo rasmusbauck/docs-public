@@ -23,7 +23,7 @@ Når man har mange ulike Terraform-moduler kan det bli mye boilerplate. Det er o
 
 ## saga-team-template
 
-Vi har laget et mal-repo, [saga-team-template](https://github.com/svvsaga/saga-team-template), som benytter Terraform for å sette opp en enkel ingest-pipeline. Her benyttes også Terragrunt, for å hente ut og samle felles oppsett.
+Vi har laget et mal-repo, [saga-team-template (krever innlogging)](https://github.com/svvsaga/saga-team-template), som benytter Terraform for å sette opp en enkel ingest-pipeline. Her benyttes også Terragrunt, for å hente ut og samle felles oppsett.
 
 Det anbefales å se på repoet for bruk av Terraform og Terragrunt, og gjerne prøv å sette opp pipelinen selv for ditt prosjekt.
 
