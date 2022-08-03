@@ -23,14 +23,14 @@ For å installere Google Cloud SDK med WSL på VDI kreves noen ekstra steg:
 1. Legg til en `apt` kilde for Google Cloud SDK.
 
     ```bash
-    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] [https://packages.cloud.google.com/apt](https://packages.cloud.google.com/apt) cloud-sdk main"\
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"\
      | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
     ```
 
 1. Fortell `apt` at du stoler på Googles offentlige nøkkel.
 
     ```bash
-    curl [https://packages.cloud.google.com/apt/doc/apt-key.gpg](https://packages.cloud.google.com/apt/doc/apt-key.gpg)\
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg \
      | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
     ```
 
