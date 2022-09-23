@@ -92,6 +92,28 @@
   text-align:left;
 }
 
+.tabs-container {
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: var(--ifm-pagination-nav-border-radius);
+}
+
+.tabs-container .tabs {
+  border-bottom: 1px solid var(--ifm-toc-border-color)
+}
+
+.tabs-container [role=tabpanel] {
+  padding: 0 1rem 1rem 1rem;
+}
+
+/*
+.tabs-container > div {
+  margin-top: 0 !important;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+*/
+
+
 /* For smaller screen sizes*/
 @media (max-width: 1440px){
   .landing-page {
