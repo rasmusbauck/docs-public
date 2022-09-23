@@ -105,15 +105,6 @@
   padding: 0 1rem 1rem 1rem;
 }
 
-/*
-.tabs-container > div {
-  margin-top: 0 !important;
-  padding: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-}
-*/
-
-
 /* For smaller screen sizes*/
 @media (max-width: 1440px){
   .landing-page {
