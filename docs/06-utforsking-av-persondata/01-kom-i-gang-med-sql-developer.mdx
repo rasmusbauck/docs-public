@@ -35,7 +35,7 @@ Deretter kan du sjekke hvilke tabeller og views du har fått tilgang til ved å 
 ```sql
 -- Finn tabeller du har tilgang til som ikke er støyende systemtabeller
 SELECT owner, table_name FROM all_tables
-WHERE owner NOT IN ('SYS', 'SYSTEM', 'APEX_200200', 'ORDS_METADATA', 'GSMADMIN_INTERNAL', 'XDB', 'WMSYS', 'CTXSYS', 'ORDSYS', 'ORDDATA', 'MDSYS');
+WHERE owner NOT IN ('SYS', 'SYSTEM', 'APEX_190100', 'APEX_200200', 'OLAPSYS', 'ORDS_METADATA', 'GSMADMIN_INTERNAL', 'XDB', 'WMSYS', 'CTXSYS', 'ORDSYS', 'ORDDATA', 'MDSYS', 'MDS');
 
 
 -- Finn views du har tilgang til som ikke er støyende system-views
