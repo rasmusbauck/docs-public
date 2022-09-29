@@ -63,6 +63,10 @@ Deretter kan du klikke på `Python 3 (ipykernel)`, under feltet notebooks, for �
 
 For å installere python-pakker du ønsker å dra nytte av i din analyse kan du stort sett bare kjøre `conda install <pakke>`. I de tilfeller der pakkene ikke ligger i de vanlige pakkebrønnene conda leter i, kan du gjøre et søk på [Anaconda pakkesøk](https://anaconda.org/search?q=geopandas) for å finne ut hvordan du kan installere pakken.
 
+## Lukking av jupyter lab
+
+Når du er ferdig å bruke jupyter lab kan den lukkes med menyvalget `File -> Shut down`.
+
 ## Feilsøking
 
 ### Noen pakker er "blokkert for gruppepolicy"
