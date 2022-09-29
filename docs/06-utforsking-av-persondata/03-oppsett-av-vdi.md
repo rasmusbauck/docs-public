@@ -57,7 +57,7 @@ Deretter kan man jobbe med notebooks rett i nettleseren.
 
 For å lage en notebook må du navigere til din egen brukers hjemmemappe, `C:\Users\<din bruker>\`, i mappestrukturen til venstre i nettleservinduet som åpnes.
 
-Deretter kan du klikke på `Python 3 (ipykernel)` for å lage en notebook du kan jobbe med analysen i.
+Deretter kan du klikke på `Python 3 (ipykernel)`, under feltet notebooks, for å lage en notebook du kan jobbe med analysen i.
 
 ## Installere pakker
 
