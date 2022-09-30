@@ -11,6 +11,10 @@ Når du får opprettet et GCP-prosjekt, er det flere ressurser som blir laget kl
 ### Prosjekter
 
 - Et delt GCP-prosjekt med formatet `saga-<teamnavn>-shared`
+  - Dette prosjektet brukes typisk til å lagre artifacts for deployment, og andre ressurser som ikke kan knyttes til ett miljø eller et domene
+- Et analyse-prosjekt med formatet `saga-<teamnavn>-analytics`
+  - I analyse-prosjektet står man friere til å opprette BigQuery-datasett uten å måtte forholde seg til datasoner eller Terraform
+  - Når et datasett er modent for deling bør det likevel flyttes inn i et spesifikt domene for å få egne prosjekt per miljø:
 - For domenenet/problemområdet du skal jobbe med blir det opprettet tre GCP-prosjekter, ett for hvert miljø (STM, ATM, PROD), på formen: `saga-<domene>-<miljø>[-<suffix>]`. Eksempel: `saga-nvdb-prod-vlmh`
 
 ### Budsjetter i prosjektene
@@ -28,6 +32,7 @@ Hvert team får opprettet en egen Slack-kanal på formen `#[team]-alerts` i Saga
 
 ### Tilgangsgrupper
 
+- Gruppen `saga-<teamnavn>` gir alle teamets medlemmer leserettigheter til GCP-ressurser i teamets prosjekter.
 - Gruppen `saga-developers` finnes fra før, og teamets utviklere blir lagt til i denne. Det gir tilgang til å se de fleste Saga-prosjekter i alle miljøer uten å kunne redigere dem.
 - Gruppen `saga-<teamnavn>-developers` gir utviklere mulighet til å lage og slette alle ressurser i STM. Alle utviklere på et team blir lagt til i denne gruppen.
 - Gruppen `saga-<teamnavn>-devops` gir utvalgte DevOps-utviklere mulighet til å lage og slette ressurser i ATM og PROD.
