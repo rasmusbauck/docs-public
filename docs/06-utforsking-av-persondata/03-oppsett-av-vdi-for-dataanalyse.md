@@ -23,7 +23,7 @@ conda update -n base -c defaults conda
 
 ## Lage et conda miljø
 
-Conda anbefaler bruk av "miljøer" for forskjellige analyser en jobber med for å samle pakker og deres avhengigheter. Slik kan relaterte pakker for en analyse oppdateres sammen uten å påvirke analyser gjort i andre miljøer. Ved bruk av miljøer kan også forskjellige versjoner av samme pakke være installert på samme tid, så lenge det er i forskjellige miljøer. En kan også velge å bruke andre versjoner av python per miljø, om noen pakker man bruker krever spesielle versjoner av python.
+Conda anbefaler bruk av "miljøer" for forskjellige analyser en jobber med for å samle pakker og deres avhengigheter. Slik kan relaterte pakker for en analyse oppdateres sammen uten å påvirke analyser gjort i andre miljøer. Ved bruk av miljøer kan også forskjellige versjoner av samme pakke være installert på samme tid, så lenge de er installert i forskjellige miljøer. En kan også velge å bruke andre versjoner av python per miljø, om noen pakker man bruker krever spesielle versjoner av python.
 
 Lag et nytt miljø med python 3.9 med følgende kommando
 
@@ -62,6 +62,46 @@ Deretter kan du klikke på `Python 3 (ipykernel)`, under feltet notebooks, for �
 ## Installere pakker
 
 For å installere python-pakker du ønsker å dra nytte av i din analyse kan du stort sett bare kjøre `conda install <pakke>`. I de tilfeller der pakkene ikke ligger i de vanlige pakkebrønnene conda leter i, kan du gjøre et søk på [Anaconda pakkesøk](https://anaconda.org/search?q=geopandas) for å finne ut hvordan du kan installere pakken.
+
+## Tilkobling til database fra notebook
+
+Når man har conda kan man installere [Oracles open source driver](https://github.com/oracle/python-oracledb/) som gjør det enkelt å koble til databaser fra en notebook. Dette kan du gjøre med følgende kommando
+
+```
+conda install -c conda-forge oracledb
+```
+
+Da kan spørringer gjøres fra en notebook med følgende python-kode. Lagre passordet ditt i minnet i notebooken
+
+```sql
+import getpass
+password = getpass.getpass("Ditt databasepassord:")
+```
+
+Kjør deretter spørringer mot databasen med oracledb-pakken.
+
+```sql
+import oracledb
+connection = oracledb.connect(user="<din bruker>",
+                              password=password,
+                              dsn="<hostnavn>.vegvesen.no:<port>/<databasenavn>.vegvesen.no")
+
+sql = """
+  select * from <din bruker>.<din tabell>
+"""
+
+with connection.cursor() as cursor:
+    for result in cursor.execute(sql):
+        print(result)
+```
+
+Ved hjelp av pakken `pandas` kan det se slik ut. Da vil du få resultatet direkte i en dataframe du kan jobbe videre med.
+
+```sql
+import pandas as pd
+dataframe = pd.read_sql(sql, connection)
+dataframe
+```
 
 ## Lukking av jupyter lab
 
