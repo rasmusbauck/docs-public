@@ -6,15 +6,15 @@ Her finner du informasjon som er relevant hvis du som utvikler eller team skal l
 
 Hvis du skal i gang med utvikling på Saga er det vanlig at ditt team får tildelt brukere og GCP-prosjekter som du eller dere kan jobbe i. [Ta kontakt med oss på Slack](https://svv-saga.slack.com/archives/C03LGD7TM5Z) eller via [vår e-post hvis du ikke bruker Slack](mailto:saga.admin@vegvesen.no), så kan vi bistå deg.
 
-Når du får opprettet et GCP-prosjekt, er det flere ressurser som blir laget klar for deg:
+Når teamet ditt får opprettet et GCP-prosjekt, er det flere ressurser som blir laget klar for deg:
 
 ### Prosjekter
 
 - Et delt GCP-prosjekt med formatet `saga-<teamnavn>-shared`
   - Dette prosjektet brukes typisk til å lagre artifacts for deployment, og andre ressurser som ikke kan knyttes til ett miljø eller et domene
 - Et analyse-prosjekt med formatet `saga-<teamnavn>-analytics`
-  - I analyse-prosjektet står man friere til å opprette BigQuery-datasett uten å måtte forholde seg til datasoner eller Terraform
-  - Når et datasett er modent for deling bør det likevel flyttes inn i et spesifikt domene for å få egne prosjekt per miljø:
+  - I analyse-prosjektet står du friere til å opprette BigQuery-datasett uten å måtte forholde seg til datasoner eller Terraform
+  - Når et datasett er modent for deling bør du likevel flytte det inn i et spesifikt domene for å få egne prosjekt per miljø:
 - For domenenet/problemområdet du skal jobbe med blir det opprettet tre GCP-prosjekter, ett for hvert miljø (STM, ATM, PROD), på formen: `saga-<domene>-<miljø>[-<suffix>]`. Eksempel: `saga-nvdb-prod-vlmh`
 
 ### Budsjetter i prosjektene
