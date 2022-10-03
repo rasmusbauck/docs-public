@@ -103,6 +103,16 @@ dataframe = pd.read_sql(sql, connection)
 dataframe
 ```
 
+## Lese filer og data fra nettverksdisk
+
+Jupyter lab kan bare lese filer fra disken programmet blir startet fra. Om du har behov for å lese eller skrive filer i en mappe du har tilgang til på en delt nettverksdisk må du navigere til mappen før du starter jupyter lab.
+
+- Start `Anaconda Powershell Prompt (Miniconda3)` som normalt
+- Naviger til mappen du vil lese fra med `cd "<disk>:\Delt\Mappe\"`
+- Start deretter `jupyter lab` som normalt
+
+Filstrukturen som dukker opp til venstre i nettleservinduet vil da vise innhold fra den delte nettverksdisken, og du kan bruke disse i din analyse som du ville gjort om det var filer på din lokale maskin. Det kan være lurt å opprette en egen mappe for din analyse i det delte området som du kan jobbe uforstyrret i.
+
 ## Lukking av jupyter lab
 
 Når du er ferdig å bruke jupyter lab kan den lukkes med menyvalget `File -> Shut down`.
