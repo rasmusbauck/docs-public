@@ -17,7 +17,7 @@ Deretter kan du starte programmet `Anaconda Powershell Prompt (Miniconda3)` fra 
 
 Når kommandolinjen er klar, er du klar til å benytte Miniconda. Kjør så denne kommandoen for å oppdatere til de siste pakkene conda har å by på:
 
-```
+```shell
 conda update -n base -c defaults conda
 ```
 
@@ -27,13 +27,13 @@ Conda anbefaler bruk av "miljøer" for forskjellige analyser en jobber med for �
 
 Lag et nytt miljø med python 3.9 med følgende kommando
 
-```
+```shell
 conda create -n <navn på ditt miljø> python=3.9
 ```
 
 Aktiver miljøet
 
-```
+```shell
 conda activate <navn på ditt miljø>
 ```
 
@@ -41,13 +41,13 @@ conda activate <navn på ditt miljø>
 
 Etter du har laget et nytt miljø og aktivert det kan du installere JupyterLab, slik at du kan bruke notebooks ved å kjøre følgende kommando.
 
-```
+```shell
 conda install jupyterlab
 ```
 
 Når pakken er installert kan JupyterLab startes med å skrive følgende kommando.
 
-```
+```shell
 jupyter lab
 ```
 
@@ -67,20 +67,20 @@ For å installere python-pakker du ønsker å dra nytte av i din analyse kan du 
 
 Når man har conda kan man installere [Oracles open source driver](https://github.com/oracle/python-oracledb/) som gjør det enkelt å koble til databaser fra en notebook. Dette kan du gjøre med følgende kommando
 
-```
+```shell
 conda install -c conda-forge oracledb
 ```
 
 Da kan spørringer gjøres fra en notebook med følgende python-kode. Lagre passordet ditt i minnet i notebooken
 
-```sql
+```python
 import getpass
 password = getpass.getpass("Ditt databasepassord:")
 ```
 
 Kjør deretter spørringer mot databasen med oracledb-pakken.
 
-```sql
+```python
 import oracledb
 connection = oracledb.connect(user="<din bruker>",
                               password=password,
@@ -97,7 +97,7 @@ with connection.cursor() as cursor:
 
 Ved hjelp av pakken `pandas` kan det se slik ut. Da vil du få resultatet direkte i en dataframe du kan jobbe videre med.
 
-```sql
+```python
 import pandas as pd
 dataframe = pd.read_sql(sql, connection)
 dataframe
@@ -105,13 +105,16 @@ dataframe
 
 ## Lese filer og data fra nettverksdisk
 
-Jupyter lab kan bare lese filer fra disken programmet blir startet fra. Om du har behov for å lese eller skrive filer i en mappe du har tilgang til på en delt nettverksdisk må du navigere til mappen før du starter jupyter lab.
+Jupyter lab kan også lese filer fra dine delte disker. Om du har behov for å lese eller skrive filer i en mappe du har tilgang til på en delt nettverksdisk må du på Windows passe på å bruke en "raw string literal", i form av en `r` foran filstien. Dette gjør at omvendte skråstreker som Windows bruker i filstier ikke tolkes feil.
 
-- Start `Anaconda Powershell Prompt (Miniconda3)` som normalt
-- Naviger til mappen du vil lese fra med `cd "<disk>:\Delt\Mappe\"`
-- Start deretter `jupyter lab` som normalt
+Med pandas kan lesing fra en csv-fil på en delt disk se slik ut
 
-Filstrukturen som dukker opp til venstre i nettleservinduet vil da vise innhold fra den delte nettverksdisken, og du kan bruke disse i din analyse som du ville gjort om det var filer på din lokale maskin. Det kan være lurt å opprette en egen mappe for din analyse i det delte området som du kan jobbe uforstyrret i.
+```python
+import pandas as pd
+pd.read_csv(r"<disk>:\Delt\Mappe\csv-fil.csv")
+```
+
+Filstrukturen som dukker opp til venstre i nettleservinduet kan bare vise filer fra disken du står i når du kjører kommandoen `jupyter lab`. Om du trenger å se filer fra den delte disken i filstrukturen må du starte `jupyter lab` fra en kommandolinje der du har navigert til mappen som har filene med kommandoen `cd <mappe>`.
 
 ## Lukking av jupyter lab
 
