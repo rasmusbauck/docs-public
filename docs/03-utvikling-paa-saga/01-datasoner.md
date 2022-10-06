@@ -12,6 +12,10 @@ Vi ønsker at datasettene på dataplattformen skal deles inn i soner. Ulike sone
 - Det er lettere å finne datasett på det dataformatet du ønsker, fordi det inngår i definisjonene av en sone.
 - Det bidrar til helhetlige datasett siden sonene legger føringer for ulike datatyper og dataformater et datasett må ha for å være en del av sonen.
 
+## Når trenger vi datasoner?
+
+For tabeller og funksjoner som ikke skal kunne deles i datakatalogen, står du fritt til å opprette egne datasett og kalle dem hva du vil. Det er altså bare tabeller som kan ha verdi for andre i Saga som bør ligge i de definerte datasonene.
+
 ## Soner, prosjekter og tilganger
 
 I Google Cloud Platform (GCP) må alle ressurser, inkludert datalager, opprettes i et GCP-prosjekt. I tillegg er det slik at ulike typer data skal lagres i ulike datalagertjenester. Dermed vil ulike datasett tilsynelatende ligge spredt ut over ulike prosjekter og tjenester.
