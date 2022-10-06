@@ -1,4 +1,3 @@
-import TKinnsiktSvg from './img/DataHub.drawio.svg';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -12,7 +11,7 @@ Det er TK Innsikt som forvalter databasen, men vi har fått utdelt en del skjema
 
 Figuren under viser grovt sett hvordan databasen er oppdelt. Fra før av finnes det en del skjemaer hvor eksisterende data ligger. I tillegg har Saga fått et område hvor det ligger skjemaer både for ulike fyrtårnteams og per bruker.
 
-<TKinnsiktSvg width="500" height={null} style={{}} />
+![Datavarehuset TK innsikt sin database](./img/tkinnsikt.drawio.png)
 
 Når du skal begynne med utforsking av et datasett kan du gjøre dette i ditt personlige skjema. Innhold som skal deles med resten av teamet ditt bør ligge i teamets skjema. For å kunne opprette tabeller i teamets skjema må du logge inn med teamets databasebruker. Brukernavn og passord finnes i ditt teams område i PAM.
 
