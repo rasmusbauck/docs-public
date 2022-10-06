@@ -21,21 +21,6 @@ Når kommandolinjen er klar, er du klar til å benytte Miniconda. Kjør så denn
 conda update -n base -c defaults conda
 ```
 
-## Lage et conda miljø
-
-Conda anbefaler bruk av "miljøer" for forskjellige analyser en jobber med for å samle pakker og deres avhengigheter. Slik kan relaterte pakker for en analyse oppdateres sammen uten å påvirke analyser gjort i andre miljøer. Ved bruk av miljøer kan også forskjellige versjoner av samme pakke være installert på samme tid, så lenge de er installert i forskjellige miljøer. En kan også velge å bruke andre versjoner av python per miljø, om noen pakker man bruker krever spesielle versjoner av python.
-
-Lag et nytt miljø med python 3.9 med følgende kommando
-
-```shell
-conda create -n <navn på ditt miljø> python=3.9
-```
-
-Aktiver miljøet
-
-```shell
-conda activate <navn på ditt miljø>
-```
 
 ## Installere JupyterLab
 
@@ -45,9 +30,11 @@ Etter du har laget et nytt miljø og aktivert det kan du installere JupyterLab, 
 conda install jupyterlab
 ```
 
-Når pakken er installert kan JupyterLab startes med å skrive følgende kommando.
+Når pakken er installert kan JupyterLab startes med å skrive følgende kommandoer. Dette tar deg til din brukers hjemmemappe og starter jupyter lab sånn at notebooks du lager havner i hjemmemappa.
+
 
 ```shell
+cd ~
 jupyter lab
 ```
 
@@ -55,9 +42,7 @@ Deretter kan man jobbe med notebooks rett i nettleseren.
 
 ## Lage en notebook
 
-For å lage en notebook må du navigere til din egen brukers hjemmemappe, `C:\Users\<din bruker>\`, i mappestrukturen til venstre i nettleservinduet som åpnes.
-
-Deretter kan du klikke på `Python 3 (ipykernel)`, under feltet notebooks, for å lage en notebook du kan jobbe med analysen i.
+Du kan du klikke på `Python 3 (ipykernel)`, under feltet notebooks, for å lage en notebook du kan jobbe med analysen i.
 
 ## Installere pakker
 
@@ -119,6 +104,22 @@ Filstrukturen som dukker opp til venstre i nettleservinduet kan bare vise filer 
 ## Lukking av jupyter lab
 
 Når du er ferdig å bruke jupyter lab kan den lukkes med menyvalget `File -> Shut down`.
+
+## Tips: Lage miljøer i conda
+
+Conda anbefaler bruk av "miljøer" for forskjellige analyser en jobber med for å samle pakker og deres avhengigheter. Slik kan relaterte pakker for en analyse oppdateres sammen uten å påvirke analyser gjort i andre miljøer. Ved bruk av miljøer kan også forskjellige versjoner av samme pakke være installert på samme tid, så lenge de er installert i forskjellige miljøer. En kan også velge å bruke andre versjoner av python per miljø, om noen pakker man bruker krever spesielle versjoner av python.
+
+Lag et nytt miljø med python 3.9 med følgende kommando
+
+```shell
+conda create -n <navn på ditt miljø> python=3.9
+```
+
+Aktiver miljøet
+
+```shell
+conda activate <navn på ditt miljø>
+```
 
 ## Feilsøking
 
