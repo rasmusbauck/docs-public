@@ -1,4 +1,4 @@
-# Hvordan få data inn i Saga
+# Ingest pipelines
 
 Mange datasett er allerede tilgjengelige i [datakatalogen vår](https://data.saga.vegvesen.no/), men ofte vil man ha behov for å hente inn nye datakilder.
 
