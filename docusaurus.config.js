@@ -18,6 +18,9 @@ const config = {
   organizationName: 'svvsaga',
   projectName: 'docs-public',
   trailingSlash: false,
+  markdown: {
+    mermaid: true,
+  },
   presets: [
     [
       'classic',
@@ -40,8 +43,9 @@ const config = {
       },
     ],
   ],
+  themes: ['@docusaurus/theme-mermaid'],
   themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig & import('@docusaurus/theme-mermaid').UserThemeConfig} */
     ({
       navbar: {
         title: 'Saga',
@@ -73,6 +77,15 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      mermaid: {
+        theme: {
+          light: 'forest',
+          dark: 'dark',
+        },
+        options: {
+          securityLevel: 'loose',
+        },
       },
     }),
 }
