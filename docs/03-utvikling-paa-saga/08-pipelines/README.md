@@ -1,4 +1,4 @@
-# Pipelines
+# Data pipelines
 
 Vi bruker begrepet "pipeline" om en prosess der data flyter fra ett sted via et eller flere steg til et annet sted. Dette kan bety ren innhenting av rådata, transformering til et dataprodukt, eller begge deler.
 
@@ -31,10 +31,10 @@ Når rådata er tilgjengelig på Saga, kan den transformeres og kombineres med a
 
 Når transformering har mange steg er det ofte behov for å få oversikt over hele prosessen samlet. Dette kalles "orkestrering". Vi tilbyr orkestrering på Saga via verktøyet [Apache Airflow](https://airflow.apache.org/), som på GCP leveres som [Cloud Composer](https://cloud.google.com/composer/docs).
 
-[Les mer om orkestrering med Airflow](../02-orkestrering-airflow.md)
+[Les mer om orkestrering med Airflow her.](../../07-hvordan-bygge-pipelines-i-saga/README.md)
 
 ### DBT
 
-Dersom all transformasjonen i en pipeline gjøres via SQL, kan man med fordel benytte [dbt](https://docs.getdbt.com/docs/introduction), enten alene eller sammen med Airflow.
+Dersom all transformasjonen i en pipeline gjøres via SQL, kan man med fordel benytte [dbt](https://docs.getdbt.com/docs/introduction), enten alene eller sammen med Airflow. Data Build Tool (dbt) er et verktøy som hjelper deg å lage robuste og gjenbrukbare SQL pipelines.
 
-[Les mer om DBT](../03-dbt.md)
+Her kommer det mer informasjon om dbt. Si fra på [#saga-support på Slack](https://vegvesen.slack.com/archives/C03LGD7TM5Z) hvis dette er viktig for deg, så skal vi forsøke utvide informasjonen så snart vi kan.
