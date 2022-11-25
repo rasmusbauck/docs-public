@@ -72,13 +72,6 @@ from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobO
 from pipeline import SagaContext, make_pipeline
 
 
-# Disse variablene kan brukes inne i SQL-filer med Jinja
-default_args = {
-    "dataset": "curated",
-    "nvdbConsumerDataset": "saga-nvdb-consumer-prod-2p3w.consumer"
-    # Flere variabler vil automatisk settes inn her, se docs nedenfor
-}
-
 # Pipelinen defineres i en funksjon som får inn en `SagaContext` med nyttig info
 def pipeline(context: SagaContext):
     create_corrected_stenginger = BigQueryInsertJobOperator(
@@ -92,6 +85,15 @@ def pipeline(context: SagaContext):
         },
         location="EU",
     )
+
+
+# Disse variablene kan brukes inne i SQL-filer med Jinja
+default_args = {
+    "dataset": "curated",
+    "nvdbConsumerDataset": "saga-nvdb-consumer-prod-2p3w.consumer"
+    # Flere variabler vil automatisk settes inn her, se docs nedenfor
+}
+
 
 # Man -må- lagre resultatet som `dag` for at Airflow skal plukke opp pipelinen.
 dag = make_pipeline("stenginger", pipeline, schedule_interval='@daily', default_args=default_args)
