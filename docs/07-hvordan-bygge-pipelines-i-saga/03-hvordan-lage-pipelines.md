@@ -4,10 +4,167 @@ Pipelines i Airflow bygges opp som en "Directed Acyclic Graph" (DAG). Litt foren
 
 ![Et eksempel på en pipeline i Airflow](img/pipeline_example.png)
 
-## Hvordan lage en DAG
+## Hvordan ser DAGs ut?
 
 En DAG er bare et python-script som slutter på `-dag.py`.
 
+En simpel DAG kan for eksempel se slik ut:
+
+```python
+from airflow.operators.http_operator import SimpleHttpOperator
+from airflow.operators.email_operator import EmailOperator
+from pipeline import make_pipeline
+
+def pipeline(_)
+    # Denne lager en task som kaller et endepunkt
+    ping = SimpleHttpOperator(task_id="call_endpoint", endpoint="http://example.com/update/")
+    # Denne lager en task som sender en epost
+    email = EmailOperator(task_id="send_email", to="admin@example.com", subject="Update complete")
+
+    # Avhengigheter mellom tasks settes med ">>". Slik det står her vil ping skje først og deretter email.
+    ping >> email
+
+# Det er make_pipeline-funksjonen som faktisk oppretter DAG-en i Airflow.
+dag = make_pipeline("my_pipeline", pipeline, schedule_interval="@daily")
+```
+
+### DAG med Python-kode
+Dersom du vil lage en DAG som kjører Python-kode, kan pipelinen se slik ut:
+
+```python
+from pipeline import make_pipeline
+from airflow.decorators import task
+
+def pipeline(_)
+    # "@task"-annotasjon kan kun brukes når man vil kjøre Python-kode i en task. Dette kalles taskflow.
+    @task
+    def hello():
+        print("hello")
+        return "world"
+
+    @task
+    def print_something(input)
+        print(input)
+
+    # For taskflow vil rekkefølgen på kall bestemme avhengighetene. Altså vil hello() kjøre før print_something(..)
+    output = hello()
+    print_something(output)
+
+dag = make_pipeline("hello_world", pipeline)
+```
+
+### DAG med SQL
+
+Det er ganske vanlig å ville kjøre et sett med SQL-spørringer i en definert rekkefølge. Det kan se slik ut:
+
+```python
+from airflow.providers.google.cloud.operators.bigquery import \
+    BigQueryInsertJobOperator
+from pipeline import make_pipeline
+
+def pipeline(_):
+    create_e6_stenginger = BigQueryInsertJobOperator(
+        task_id="create_e6_stenginger",
+        configuration={
+            "query": {
+                "query": """
+                    CREATE OR REPLACE TABLE `{{ project_id }}.{{ dataset }}.stenginger_e6` AS
+                    SELECT * FROM `saga-oppetid-prod-o6pj.curated.stenginger`
+                    WHERE road = "E6"
+                """,
+                "useLegacySql": False,
+            }
+        },
+    )
+
+    stenginger_e6_i_2021 = BigQueryInsertJobOperator(
+        task_id="stenginger_e6_i_2021",
+        configuration={
+            "query": {
+                "query": """
+                    CREATE OR REPLACE TABLE `{{ project_id }}.{{ dataset }}.stenginger_e6_i_2021` AS
+                    SELECT * FROM `{{ project_id }}.{{ dataset }}.stenginger_e6` s
+                    JOIN `saga-oppetid-prod-o6pj.curated.stenginginstanser` si ON si.stengingId = s.stengingId
+                    WHERE DATE(si.startTime, 'Europe/Oslo') BETWEEN '2021-01-01' AND '2022-01-01'
+                    """,
+                "useLegacySql": False,
+            }
+        },
+    )
+
+    create_e6_stenginger >> stenginger_e6_i_2021
+
+# default_args blir sendt videre til både tasks og templates, f.eks. i SQL
+default_args = {
+    'dataset': 'examples',
+}
+
+dag = make_pipeline("find_e6_stenginger_2021", pipeline, default_args=default_args)
+```
+
+Dersom du vil lære mer om hvordan DAGs fungerer, har [vi skrevet om dette her.](#hvordan-er-dags-bygd-opp)
+
+## Hva nå?
+
+Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `-dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. Koden til alle [Yggdrasil sine DAGs kan sees her.](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil)
+
+Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/).
+
+## Testing
+
+En grunnleggende test av alle DAGs vil bli kjørt i PRs og før deploy, som vil sjekke at det er gyldig Python-kode og imports. Disse kan kjøres med
+
+```sh
+source activate.sh
+pytest test_dags.py
+```
+
+Andre tester kan legges til i samme mappe som DAGen.
+
+## Kjøre Airflow lokalt
+
+Du kan kalle `./start-airflow.sh` for å kjøre opp Airflow lokalt (krever Docker og `docker-compose`).
+
+Airflow vil være tilgjengelig på http://localhost:8080, med innlogging brukernavn og passord begge satt til `airflow`.
+
+Det settes opp directory-mapping fra din lokale mappe til Airflow:
+
+- DAGs vil leses fra `build/`-mappa
+- Plugins leses fra `plugins/`-mappa
+
+For å kjøre Airflow CLI-kommandoer kan du bruke `npm run airflow <args>` (krever `docker-compose`), f.eks.:
+
+```shell
+npm run airflow dags list
+```
+
+### Bygge og teste DAGs lokalt
+
+Hvis du har Airflow kjørende lokalt, kan du kjøre dine DAGs der.
+
+1. For å slippe å gjenta deg selv kan du sette path til DAGen som en variabel: `export DAG=dags/yggdrasil/oppetid/hendelser-dag.py`
+1. Hvis du har en Dockerfile som skal bygges:
+   1. Velg deg en unik tag, f.eks. ditt brukernavn på 6 bokstaver, og sett denne: `export TAG=geisag`
+   1. Kjør `python build_docker_images.py $TAG $DAG`
+1. Kjør `python build_dags.py [--tag $TAG] STM $DAG`. Dette vil bygge DAGen (evt. med docker-image-tag) og erstatte templated fields. Du kan se resultatet i `build/`.
+1. Din lokale Airflow vil automatisk plukke opp DAGs som ligger i `build/`-mappa.
+1. Så lenge du er logget inn i `gcloud` med `gcloud auth application-default login` vil Airflow bruke dine credentials. Sørg for at du har rettigheter til å impersonate project service accounten for DAGens prosjekt.
+
+Dersom din DAG ikke dukker opp, kan du feilsøke:
+
+```shell
+npm run airflow dags list-import-errors
+```
+
+Du kan også kjøre DAGs direkte for testing:
+
+```shell
+npm run airflow dags test oppetid_hendelser 2022-01-01
+```
+
+Du vil da få log output rett i terminalen, som kan være nyttig for feilsøking.
+
+## Hvordan er DAGs bygd opp?
 En DAG består av én eller flere tasks. Tasks kan lages på to ulike måter:
 
 - [Operators](https://airflow.apache.org/docs/apache-airflow/stable/concepts/operators.html)
@@ -22,46 +179,7 @@ Det finnes et utall ferdiglagde operatorer. Noen nyttige eksempler er:
 
 [Se flere innebygde operators her](https://airflow.apache.org/docs/apache-airflow/stable/concepts/operators.html) og [operators for GCP her.](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/index.html)
 
-```python
-from airflow.operators.http_operator import SimpleHttpOperator
-from airflow.operators.email_operator import EmailOperator
-from pipeline import make_pipeline
-
-def pipeline(_)
-    ping = SimpleHttpOperator(task_id="call_endpoint", endpoint="http://example.com/update/")
-    email = EmailOperator(task_id="send_email", to="admin@example.com", subject="Update complete")
-
-    # Avhengigheter mellom tasks settes med >>
-    ping >> email
-
-dag = make_pipeline("my_pipeline", pipeline)
-```
-
-### Taskflow
-
-Taskflow gir en enklere, mer Python-aktig måte å skrive DAGs på, men støtter bare Python-kode.
-
-```python
-from pipeline import make_pipeline
-from airflow.decorators import task
-
-def pipeline(_)
-    @task
-    def hello():
-        print("hello")
-        return "world"
-
-    @task
-    def print_something(input)
-        print(input)
-
-    # For Taskflow vil rekkefølgen på kall bestemme avhengighetene
-    output = hello()
-    print_something(output)
-
-dag = make_pipeline("hello_world", pipeline)
-```
-
+### Make_pipeline
 Vi har i tillegg laget en wrapper `make_pipeline` som automatisk setter inn nødvendige variabler for tilgangsstyring.
 
 Her er et eksempel som kjører en spørring mot BigQuery:
@@ -195,59 +313,6 @@ Gotchas:
 - DAGen vil kjøre ved slutten av hvert intervall.
 - DAGen vil kjøre øyeblikkelig hvis `start_date` er i fortiden. Ønsker man å vente med første kjøring til midnatt, sett f.eks. `start_date` til dagens dato og `schedule_interval='@daily'`.
 
-## Testing
-
-En grunnleggende test av alle DAGs vil bli kjørt i PRs og før deploy, som vil sjekke at det er gyldig Python-kode og imports. Disse kan kjøres med
-
-```sh
-source activate.sh
-pytest test_dags.py
-```
-
-Andre tester kan legges til i samme mappe som DAGen.
-
-## Kjøre Airflow lokalt
-
-Du kan kalle `./start-airflow.sh` for å kjøre opp Airflow lokalt (krever Docker og `docker-compose`).
-
-Airflow vil være tilgjengelig på http://localhost:8080, med innlogging brukernavn og passord begge satt til `airflow`.
-
-Det settes opp directory-mapping fra din lokale mappe til Airflow:
-
-- DAGs vil leses fra `build/`-mappa
-- Plugins leses fra `plugins/`-mappa
-
-For å kjøre Airflow CLI-kommandoer kan du bruke `npm run airflow <args>` (krever `docker-compose`), f.eks.:
-
-```shell
-npm run airflow dags list
-```
-
-### Bygge og teste DAGs lokalt
-
-Hvis du har Airflow kjørende lokalt, kan du kjøre dine DAGs der.
-
-1. For å slippe å gjenta deg selv kan du sette path til DAGen som en variabel: `export DAG=dags/yggdrasil/oppetid/hendelser-dag.py`
-1. Hvis du har en Dockerfile som skal bygges:
-   1. Velg deg en unik tag, f.eks. ditt brukernavn på 6 bokstaver, og sett denne: `export TAG=geisag`
-   1. Kjør `python build_docker_images.py $TAG $DAG`
-1. Kjør `python build_dags.py [--tag $TAG] STM $DAG`. Dette vil bygge DAGen (evt. med docker-image-tag) og erstatte templated fields. Du kan se resultatet i `build/`.
-1. Din lokale Airflow vil automatisk plukke opp DAGs som ligger i `build/`-mappa.
-1. Så lenge du er logget inn i `gcloud` med `gcloud auth application-default login` vil Airflow bruke dine credentials. Sørg for at du har rettigheter til å impersonate project service accounten for DAGens prosjekt.
-
-Dersom din DAG ikke dukker opp, kan du feilsøke:
-
-```shell
-npm run airflow dags list-import-errors
-```
-
-Du kan også kjøre DAGs direkte for testing:
-
-```shell
-npm run airflow dags test oppetid_hendelser 2022-01-01
-```
-
-Du vil da få log output rett i terminalen, som kan være nyttig for feilsøking.
 
 ## Python modules
 
