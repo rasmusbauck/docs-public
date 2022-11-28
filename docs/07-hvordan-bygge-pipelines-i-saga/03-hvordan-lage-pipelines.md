@@ -2,7 +2,7 @@
 
 Pipelines i Airflow bygges opp som en "Directed Acyclic Graph" (DAG). Litt forenklet så er en DAG en graf med bokser og piler, som i eksempelet under. Boksene representerer steg i en pipeline, og pilene viser avhengighetene mellom stegene.
 
-![Et eksempel på en pipeline i Airflow](img/pipeline_example.png)
+![Et eksempel på en pipeline i Airflow](img/pipeline_example.webp)
 
 ## Hvordan ser DAGs ut?
 
@@ -29,6 +29,7 @@ dag = make_pipeline("my_pipeline", pipeline, schedule_interval="@daily")
 ```
 
 ### DAG med Python-kode
+
 Dersom du vil lage en DAG som kjører Python-kode, kan pipelinen se slik ut:
 
 ```python
@@ -165,6 +166,7 @@ npm run airflow dags test oppetid_hendelser 2022-01-01
 Du vil da få log output rett i terminalen, som kan være nyttig for feilsøking.
 
 ## Hvordan er DAGs bygd opp?
+
 En DAG består av én eller flere tasks. Tasks kan lages på to ulike måter:
 
 - [Operators](https://airflow.apache.org/docs/apache-airflow/stable/concepts/operators.html)
@@ -180,6 +182,7 @@ Det finnes et utall ferdiglagde operatorer. Noen nyttige eksempler er:
 [Se flere innebygde operators her](https://airflow.apache.org/docs/apache-airflow/stable/concepts/operators.html) og [operators for GCP her.](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/index.html)
 
 ### Make_pipeline
+
 Vi har i tillegg laget en wrapper `make_pipeline` som automatisk setter inn nødvendige variabler for tilgangsstyring.
 
 Her er et eksempel som kjører en spørring mot BigQuery:
@@ -312,7 +315,6 @@ Gotchas:
 - Hvis `start_date` er i fortiden, vil Airflow kjøre én gang for nyeste intervall. Dersom man ønsker å ta igjen alle kjøringer siden `start_date` kan man sette `catchup=True`.
 - DAGen vil kjøre ved slutten av hvert intervall.
 - DAGen vil kjøre øyeblikkelig hvis `start_date` er i fortiden. Ønsker man å vente med første kjøring til midnatt, sett f.eks. `start_date` til dagens dato og `schedule_interval='@daily'`.
-
 
 ## Python modules
 
