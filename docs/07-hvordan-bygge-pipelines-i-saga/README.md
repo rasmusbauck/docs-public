@@ -10,7 +10,7 @@ Når man bygger pipelines med flere transformasjonssteg er det fort gjort å mis
 
 Saga tilbyr en ferdig oppsatt orkestreringstjeneste basert på [Cloud Composer](https://cloud.google.com/composer/docs/composer-2/composer-overview), som er GCP sin tjeneste for [Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/concepts/overview.html).
 
-![Et eksempel på en pipeline i Airflow](img/pipeline_example.png)
+![Et eksempel på en pipeline i Airflow](img/pipeline_example.webp)
 _Figur: Eksempel på hvordan en pipeline visualiseres i Airflow_
 
 Dette kapittelet handler i hovedsak om hvordan bygge pipelines i Airflow. Om du vil lese mer om ulike typer pipelines har vi skrevet [en side om dette her.](/utvikling-paa-saga/pipelines)
