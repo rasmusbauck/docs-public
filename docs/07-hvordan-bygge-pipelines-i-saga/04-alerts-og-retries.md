@@ -58,16 +58,15 @@ Her ser vi én melding om en feilende task, og én melding om en retry. Begge ko
 
 ### Overstyre Slack-kanal
 
-Hvis man ønsker å få alerts i en annen Slack-kanal, eller skru av alerts, kan dette gjøres ved å sende med `slack_failure_channel` for feil, eller `slack_retry_channel` for retries:
+Hvis man ønsker å få alerts i en annen Slack-kanal, eller skru av alerts, kan dette gjøres ved å spesifisere egne felter i `config.yml` i enten team-mappe eller domene-mappe:
 
-```python
-...
-
-dag = make_pipeline('my_pipeline', pipeline,
-  # Kanalen må eksistere i Sagas Slack
-  slack_failure_channel='#my-custom-channel',
-  # Hvis man sender med en tom streng vil alerts bli skrudd av
-  slack_retry_channel='')
+```yaml
+slack:
+  failure_channel: '#main-alerts'
+  retry_channel: '#spammy-alerts'
+  failure_channel_stm: '#stm-alerts'
+  # Sett kanal til tom streng for å skru av alerting
+  retry_channel_stm: ''
 ```
 
 ## Kjøring av DAGs og tasks på nytt
