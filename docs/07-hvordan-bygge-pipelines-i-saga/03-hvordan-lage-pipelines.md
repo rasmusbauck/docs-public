@@ -265,7 +265,7 @@ Her er en liste over våre egne variabler du kan bruke:
 
 | Variabel           | Beskrivelse                                                                                                                                                                                                                                                |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `__PROJECT_ID__`   | Erstattes med STM project ID for PRer, og PROD project ID ved merging til main. Leses fra `projects.config.json` i DAGens mappe.                                                                                                                           |
+| `__PROJECT_ID__`   | Erstattes med STM project ID for PRer, og PROD project ID ved merging til main. Leses fra `config.yml` i DAGens mappe.                                                                                                                                     |
 | `__IMAGE__`        | Dersom det finnes en Dockerfile i DAGens mappe, vil denne settes til imaget, inkludert tag, f.eks. `europe-docker.pkg.dev/saga-artifacts/docker/dags/yggdrasil/oppetid:pr-13`.                                                                             |
 | `__PROJECT_BASE__` | Project ID uten saga-prefix, miljø eller random suffix. F.eks. for `saga-oppetid-stm-6cgp` vil `project_base` være `oppetid`. Vil matche navnet på katalogen som DAGene ligger i. Brukes for å referere til f.eks. service accounts eller GCP connections. |
 
