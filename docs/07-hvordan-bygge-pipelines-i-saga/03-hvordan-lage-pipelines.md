@@ -11,7 +11,7 @@ En DAG er bare et python-script som slutter på `-dag.py`.
 En simpel DAG kan for eksempel se slik ut:
 
 ```python
-from airflow.operators.http_operator import SimpleHttpOperator
+from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.operators.email_operator import EmailOperator
 from pipeline import make_pipeline
 
