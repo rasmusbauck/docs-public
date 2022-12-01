@@ -15,7 +15,7 @@ from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.operators.email_operator import EmailOperator
 from pipeline import make_pipeline
 
-def pipeline(_)
+def pipeline(_):
     # Denne lager en task som kaller et endepunkt
     ping = SimpleHttpOperator(task_id="call_endpoint", endpoint="http://example.com/update/")
     # Denne lager en task som sender en epost
@@ -25,7 +25,7 @@ def pipeline(_)
     ping >> email
 
 # Det er make_pipeline-funksjonen som faktisk oppretter DAG-en i Airflow.
-dag = make_pipeline("my_pipeline", pipeline, schedule_interval="@daily")
+dag = make_pipeline(pipeline, schedule_interval="@daily")
 ```
 
 ### DAG med Python-kode
@@ -36,7 +36,7 @@ Dersom du vil lage en DAG som kjører Python-kode, kan pipelinen se slik ut:
 from pipeline import make_pipeline
 from airflow.decorators import task
 
-def pipeline(_)
+def pipeline(_):
     # "@task"-annotasjon kan kun brukes når man vil kjøre Python-kode i en task. Dette kalles taskflow.
     @task
     def hello():
@@ -44,14 +44,14 @@ def pipeline(_)
         return "world"
 
     @task
-    def print_something(input)
+    def print_something(input):
         print(input)
 
     # For taskflow vil rekkefølgen på kall bestemme avhengighetene. Altså vil hello() kjøre før print_something(..)
     output = hello()
     print_something(output)
 
-dag = make_pipeline("hello_world", pipeline)
+dag = make_pipeline(pipeline)
 ```
 
 ### DAG med SQL
@@ -100,7 +100,7 @@ default_args = {
     'dataset': 'examples',
 }
 
-dag = make_pipeline("find_e6_stenginger_2021", pipeline, default_args=default_args)
+dag = make_pipeline(pipeline, default_args=default_args)
 ```
 
 Dersom du vil lære mer om hvordan DAGs fungerer, har [vi skrevet om dette her.](#hvordan-er-dags-bygd-opp)
