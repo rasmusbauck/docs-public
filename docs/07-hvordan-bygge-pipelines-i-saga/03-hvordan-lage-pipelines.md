@@ -103,6 +103,7 @@ default_args = {
 dag = make_pipeline(pipeline, default_args=default_args)
 ```
 
+Dersom du vil se flere eksempler, har vi [flere eksempler i GitHub-repoet](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil/examples).
 Dersom du vil lære mer om hvordan DAGs fungerer, har [vi skrevet om dette her.](#hvordan-er-dags-bygd-opp)
 
 ## Hva nå?
