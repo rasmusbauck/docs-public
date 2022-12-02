@@ -34,7 +34,6 @@ Pipelines i Airflow bygges opp som en "Directed Acyclic Graph" (DAG). DAG er en 
 
 ![Et eksempel på en pipeline i Airflow](img/visualisering-av-pipeline-i-airflow.png)
 
-
 ## Hvordan lager man en DAG?
 
 En DAG er et Python-script som slutter på `.dag.py`. De forskjellige stegene i en DAG kalles tasks i Airflow. Det er to måter å lage tasks på, med operatorer eller med @task-annotasjon. Begge måtene blir vist i eksempelet under. Dersom du har et steg som skal kjøre Python-kode, bør @task-annotasjon benyttes. Ellers, for mer spesialiserte oppgaver, finnes det en del ferdige operatorer man kan benytte i sine tasks.
@@ -64,7 +63,7 @@ def pipeline(context: SagaContext):
     print_hello_task >> print_world_task
 
 # Det er make_pipeline-funksjonen som faktisk oppretter DAG-en i Airflow.
-dag = make_pipeline(pipeline, schedule_interval="@once")
+make_pipeline(pipeline, schedule_interval="@once")
 ```
 
 ### DAG med Python-kode
@@ -90,7 +89,7 @@ def pipeline(_):
     output = hello()
     print_something(output)
 
-dag = make_pipeline(pipeline)
+make_pipeline(pipeline)
 ```
 
 ### DAG med SQL
@@ -139,7 +138,7 @@ default_args = {
     'dataset': 'examples',
 }
 
-dag = make_pipeline(pipeline, default_args=default_args)
+make_pipeline(pipeline, default_args=default_args)
 ```
 
 Dersom du vil se flere eksempler, har vi [flere eksempler i GitHub-repoet](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil/examples).
@@ -200,10 +199,10 @@ Dersom din DAG ikke dukker opp, kan du feilsøke:
 npm run airflow dags list-import-errors
 ```
 
-Du kan også kjøre DAGs direkte for testing:
+Du kan også kjøre DAGs direkte for testing. Merk at du må prefikse med team og domene, slik IDen ser ut i Airflow. Du må også sende med en dato for intervallstart; denne vil som regel ikke bli brukt, men er påkrevd.
 
 ```shell
-npm run airflow dags test oppetid_hendelser 2022-01-01
+npm run airflow dags test yggdrasil_oppetid_hendelser 2022-01-01
 ```
 
 Du vil da få log output rett i terminalen, som kan være nyttig for feilsøking.
@@ -259,8 +258,7 @@ default_args = {
 }
 
 
-# Man -må- lagre resultatet som `dag` for at Airflow skal plukke opp pipelinen.
-dag = make_pipeline("stenginger", pipeline, schedule_interval='@daily', default_args=default_args)
+make_pipeline("stenginger", pipeline, schedule_interval='@daily', default_args=default_args)
 ```
 
 Vi bruker [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stable/templates-ref.html) for å inkludere SQL-filer og sette inn variabler i disse.
@@ -288,7 +286,7 @@ def pipeline(context: SagaContext):
 
     copy_table()
 
-dag = make_pipeline("copy-stenginger", pipeline)
+make_pipeline("copy-stenginger", pipeline)
 ```
 
 ## Automatikk og variabler
