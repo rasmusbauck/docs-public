@@ -1,10 +1,41 @@
 # Hvordan lage pipelines i Airflow
 
+Følg stegene under dersom du har tenkt å bygge pipelines i Saga. Merk at det går an å trykke på flere av stegene i figuren.
+
+```mermaid
+graph TD
+  A(<u>Ta kontakt med Yggdrasil</u>) --> |Yggdrasil kobler prosjektet ditt til Airflow|B
+  click A href "https://vegvesen.slack.com/archives/C03LGD7TM5Z" "Åpne #saga-support i Slack" _blank
+	B(<u>Sjekk ut `saga-pipelines` repo</u>) --> C
+  click B href "https://github.com/svvsaga/saga-pipelines" _blank
+  C(Lag en DAG) --> D
+	C --> E
+  D(<u>Test DAGen lokalt</u>)
+  click D "https://github.com/svvsaga/saga-pipelines#kj%C3%B8re-airflow-lokalt" _blank
+  E(Lag en pull request så DAGen kjører i <u>Saga Pipelines STM</u>) --> |Yggdrasil godkjenner din PR|F
+  click E href "https://console.cloud.google.com/composer/environments/detail/europe-west1/saga-pipelines-stm-composer/dags?project=saga-pipelines-stm" _blank
+  F(DAGen blir deployet til <u>Saga Pipelines PROD</u>)
+  click F href "https://console.cloud.google.com/composer/environments/detail/europe-west1/saga-pipelines-prod-composer/dags?project=saga-pipelines-prod" _blank
+```
+
+## GitHub-repo for pipelines
+
+Vi har laget et GitHub-repo [saga-pipelines](https://github.com/svvsaga/saga-pipelines) hvor koden for alle pipelines i Saga skal ligge, med mindre [pipelinen ikke egner seg for Airflow.](https://airflow.apache.org/docs/apache-airflow/stable/index.html#why-not-airflow) Dersom du mistenker at din pipeline ikke egner seg for Airflow, [ta gjerne kontakt med oss](https://vegvesen.slack.com/archives/C03LGD7TM5Z) for å diskutere hvordan pipelinen kan bygges.
+
+## Pipelines i Airflow
+
+Du kan se ditt teams kjørende pipelines her:
+
+🚧 [Pipelines i STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/)
+
+## Hvordan er pipelines bygd opp i Airflow?
+
 Pipelines i Airflow bygges opp som en "Directed Acyclic Graph" (DAG). DAG er en graf med bokser og piler, som i eksempelet under. Boksene representerer steg i en pipeline, og pilene viser avhengighetene mellom stegene.
 
 ![Et eksempel på en pipeline i Airflow](img/visualisering-av-pipeline-i-airflow.png)
 
-## Hvordan ser DAGs ut?
+
+## Hvordan lager man en DAG?
 
 En DAG er et Python-script som slutter på `.dag.py`. De forskjellige stegene i en DAG kalles tasks i Airflow. Det er to måter å lage tasks på, med operatorer eller med @task-annotasjon. Begge måtene blir vist i eksempelet under. Dersom du har et steg som skal kjøre Python-kode, bør @task-annotasjon benyttes. Ellers, for mer spesialiserte oppgaver, finnes det en del ferdige operatorer man kan benytte i sine tasks.
 
@@ -113,11 +144,11 @@ dag = make_pipeline(pipeline, default_args=default_args)
 
 Dersom du vil se flere eksempler, har vi [flere eksempler i GitHub-repoet](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil/examples).
 
-Dersom du vil lære mer om [hvordan DAGs fungerer, har vi skrevet om dette](#hvordan-er-dags-bygd-opp).
+Dersom du vil lære mer om [hvordan DAGs fungerer, har vi skrevet om dette](#byggeklosser-i-en-dag).
 
 ## Hva nå?
 
-Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `-dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. [Du kan også se hvordan koden til alle Yggdrasil sine DAGs ser ut.](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil)
+Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `.dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. [Du kan også se hvordan koden til alle Yggdrasil sine DAGs ser ut.](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil)
 
 Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/).
 
@@ -177,7 +208,7 @@ npm run airflow dags test oppetid_hendelser 2022-01-01
 
 Du vil da få log output rett i terminalen, som kan være nyttig for feilsøking.
 
-## Hvordan er DAGs bygd opp?
+## Byggeklosser i en DAG
 
 En DAG består av én eller flere tasks. Tasks kan lages på to ulike måter:
 
@@ -374,3 +405,7 @@ Hvis du bruker container runtimen Colima på macOS eller Linux isteden for eksem
 ```
 export DOCKER_HOST=unix://$HOME/.colima/default/docker.sock
 ```
+
+## Tilbakemeldinger
+
+Si fra på [#saga-support på Slack](https://vegvesen.slack.com/archives/C03LGD7TM5Z) hvis noe er uklart eller mangler, så skal vi forsøke utvide dokumentasjonen så snart vi kan.
