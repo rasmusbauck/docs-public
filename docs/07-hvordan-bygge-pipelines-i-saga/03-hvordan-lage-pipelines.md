@@ -6,26 +6,34 @@ Pipelines i Airflow bygges opp som en "Directed Acyclic Graph" (DAG). Litt foren
 
 ## Hvordan ser DAGs ut?
 
-En DAG er bare et python-script som slutter på `-dag.py`.
+En DAG er bare et Python-script som slutter på `-dag.py`. De forskjellige stegene i en DAG kalles tasks i Airflow. Det er to måter å lage tasks på, med operatorer eller med @task-annotasjon. Begge måtene blir vist i eksempelet under. Dersom du har et steg som skal kjøre Python-kode, bør @task-annotasjon benyttes. Ellers, for mer spesialiserte oppgaver, finnes det en del ferdige operatorer man kan benytte i sine tasks.
 
-En simpel DAG kan for eksempel se slik ut:
+En enkel DAG kan for eksempel se slik ut:
 
 ```python
-from airflow.providers.http.operators.http import SimpleHttpOperator
-from airflow.operators.email_operator import EmailOperator
-from pipeline import make_pipeline
+from airflow.decorators import task
+from airflow.operators.bash import BashOperator
+from pipeline import SagaContext, make_pipeline
 
-def pipeline(_):
-    # Denne lager en task som kaller et endepunkt
-    ping = SimpleHttpOperator(task_id="call_endpoint", endpoint="http://example.com/update/")
-    # Denne lager en task som sender en epost
-    email = EmailOperator(task_id="send_email", to="admin@example.com", subject="Update complete")
+
+def pipeline(context: SagaContext):
+
+    # Tasks kan lages med operatorer
+    print_hello_task = BashOperator(task_id="hello", bash_command="echo hello")
+
+    # Eller med @task før en Python-funksjon
+    @task()
+    def print_world():
+        print("world")
+        print(context)
+
+    print_world_task = print_world()
 
     # Avhengigheter mellom tasks settes med ">>". Slik det står her vil ping skje først og deretter email.
-    ping >> email
+    print_hello_task >> print_world_task
 
 # Det er make_pipeline-funksjonen som faktisk oppretter DAG-en i Airflow.
-dag = make_pipeline(pipeline, schedule_interval="@daily")
+dag = make_pipeline(pipeline, schedule_interval="@once")
 ```
 
 ### DAG med Python-kode
