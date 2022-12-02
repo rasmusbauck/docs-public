@@ -186,7 +186,7 @@ npm run airflow dags list
 
 Hvis du har Airflow kjørende lokalt, kan du kjøre dine DAGs der.
 
-1. For å slippe å gjenta deg selv kan du sette path til DAGen som en variabel: `export DAG=dags/yggdrasil/oppetid/hendelser-dag.py`
+1. For å slippe å gjenta deg selv kan du sette path til DAGen som en variabel: `export DAG=dags/yggdrasil/oppetid/hendelser.dag.py`
 1. Hvis du har en Dockerfile som skal bygges:
    1. Velg deg en unik tag, eksempelvis ditt brukernavn på 6 bokstaver, og sett denne: `export TAG=geisag`
    1. Kjør `python build_docker_images.py $TAG $DAG`
