@@ -1,12 +1,14 @@
 # Oppsett av VDI for dataanalyse
 
-Som standard har VDI-er ganske begrenset med programvare egnet for dataanalyse. I skyen anbefaler vi ofte at folk bruker Google Colab eller andre tjenester for kjøring av [Jupyter Notebooks](https://jupyter.org/). For å slippe å forholde seg til mange ulike verktøy anbefaler vi også kjøring av notebooks på din VDI. Det kan gjøres gjennom programvaren Miniconda, som er en mindre versjon av Anaconda, som gjør det enkelt å jobbe med analyse av data i python.
+Som standard har en VDI begrenset med programvare egnet for dataanalyse. I skyen anbefaler vi ofte at folk bruker Google Colab eller andre tjenester for kjøring av [Jupyter Notebooks](https://jupyter.org/). For å slippe å forholde seg til mange ulike verktøy anbefaler vi også kjøring av notebooks på din VDI. Det kan gjøres gjennom programvaren Miniconda, som er en mindre og lettere versjon av Anaconda. Miniconda gjør det enklere å jobbe med analyse av data i python.
 
 ## Installere Miniconda
 
 Siste versjon av Miniconda for Windows (64-bit) kan lastes ned fra https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links
 
-Miniconda er godkjent for bruk i VDI, noe som gjør at den kan installeres og kjøres som din egen bruker, forutsatt at du installerer programmet i mappen installasjonen foreslår som standard. Følg disse stegene for å installere Miniconda:
+Miniconda er godkjent for bruk i VDI, noe som gjør at den kan installeres og kjøres som din egen bruker. Det forutsetter dog at du installerer programmet i mappen installasjonen foreslår som standard.
+
+#### Følg disse stegene for å installere Miniconda:
 
 - Kjør installasjonsfilen `Miniconda3-latest-Windows-x86_64.exe`
 - På siden "Select Installation Type", velg å installere programmet for `Just me (recommended)`
@@ -21,17 +23,15 @@ Når kommandolinjen er klar, er du klar til å benytte Miniconda. Kjør så denn
 conda update -n base -c defaults conda
 ```
 
-
 ## Installere JupyterLab
 
-Etter du har laget et nytt miljø og aktivert det kan du installere JupyterLab, slik at du kan bruke notebooks ved å kjøre følgende kommando.
+Etter du har laget et nytt miljø og aktivert det kan du installere JupyterLab. Deretter kan du bruke notebooks ved å kjøre følgende kommando.
 
 ```shell
 conda install jupyterlab
 ```
 
-Når pakken er installert kan JupyterLab startes med å skrive følgende kommandoer. Dette tar deg til din brukers hjemmemappe og starter jupyter lab sånn at notebooks du lager havner i hjemmemappa.
-
+Når pakken er installert kan JupyterLab startes med å skrive følgende kommandoer. Dette tar deg til din brukers hjemmemappe og starter JupyterLab sånn at notebooks du lager havner i hjemmemappa.
 
 ```shell
 cd ~
@@ -46,24 +46,24 @@ Du kan du klikke på `Python 3 (ipykernel)`, under feltet notebooks, for å lage
 
 ## Installere pakker
 
-For å installere python-pakker du ønsker å dra nytte av i din analyse kan du stort sett bare kjøre `conda install <pakke>`. I de tilfeller der pakkene ikke ligger i de vanlige pakkebrønnene conda leter i, kan du gjøre et søk på [Anaconda pakkesøk](https://anaconda.org/search?q=geopandas) for å finne ut hvordan du kan installere pakken.
+For å installere python-pakker du ønsker å dra nytte av i din analyse kan du stort sett kjøre `conda install <pakke>`. I de tilfeller der pakkene ikke ligger i de vanlige pakkebrønnene conda leter i, kan du gjøre et søk i [Anaconda sitt pakkesøk](https://anaconda.org/search?q=geopandas) for å finne ut hvordan du kan installere pakken.
 
 ## Tilkobling til database fra notebook
 
-Når man har conda kan man installere [Oracles open source driver](https://github.com/oracle/python-oracledb/) som gjør det enkelt å koble til databaser fra en notebook. Dette kan du gjøre med følgende kommando
+Når man har conda kan man installere [Oracles open source driver](https://github.com/oracle/python-oracledb/), som gjør det enkelt å koble til databaser fra en notebook. Dette kan du gjøre med følgende kommando
 
 ```shell
 conda install -c conda-forge oracledb
 ```
 
-Da kan spørringer gjøres fra en notebook med følgende python-kode. Lagre passordet ditt i minnet i notebooken
+Da kan spørringer gjøres fra en notebook med følgende python-kode. Lagre passordet ditt i minnet i notebooken:
 
 ```python
 import getpass
 password = getpass.getpass("Ditt databasepassord:")
 ```
 
-Kjør deretter spørringer mot databasen med oracledb-pakken.
+Kjør deretter spørringer mot databasen med oracledb-pakken:
 
 ```python
 import oracledb
@@ -90,7 +90,7 @@ dataframe
 
 ## Lese filer og data fra nettverksdisk
 
-Jupyter lab kan også lese filer fra dine delte disker. Om du har behov for å lese eller skrive filer i en mappe du har tilgang til på en delt nettverksdisk må du på Windows passe på å bruke en "raw string literal", i form av en `r` foran filstien. Dette gjør at omvendte skråstreker som Windows bruker i filstier ikke tolkes feil.
+JupyterLab kan også lese filer fra dine delte disker. Hvis du har behov for å lese eller skrive filer i en mappe du har tilgang til på en delt nettverksdisk, må du på Windows passe på å bruke en "raw string literal", i form av en `r` foran filstien. Dette gjør at omvendte skråstreker som Windows bruker i filstier ikke tolkes feil.
 
 Med pandas kan lesing fra en csv-fil på en delt disk se slik ut
 
@@ -101,21 +101,21 @@ pd.read_csv(r"<disk>:\Delt\Mappe\csv-fil.csv")
 
 Filstrukturen som dukker opp til venstre i nettleservinduet kan bare vise filer fra disken du står i når du kjører kommandoen `jupyter lab`. Om du trenger å se filer fra den delte disken i filstrukturen må du starte `jupyter lab` fra en kommandolinje der du har navigert til mappen som har filene med kommandoen `cd <mappe>`.
 
-## Lukking av jupyter lab
+## Lukking av JupyterLab
 
-Når du er ferdig å bruke jupyter lab kan den lukkes med menyvalget `File -> Shut down`.
+Når du er ferdig å bruke JupyterLab kan den lukkes med menyvalget `File -> Shut down`.
 
 ## Tips: Lage miljøer i conda
 
 Conda anbefaler bruk av "miljøer" for forskjellige analyser en jobber med for å samle pakker og deres avhengigheter. Slik kan relaterte pakker for en analyse oppdateres sammen uten å påvirke analyser gjort i andre miljøer. Ved bruk av miljøer kan også forskjellige versjoner av samme pakke være installert på samme tid, så lenge de er installert i forskjellige miljøer. En kan også velge å bruke andre versjoner av python per miljø, om noen pakker man bruker krever spesielle versjoner av python.
 
-Lag et nytt miljø med python 3.9 med følgende kommando
+Lag et nytt miljø med python 3.9 med følgende kommando:
 
 ```shell
 conda create -n <navn på ditt miljø> python=3.9
 ```
 
-Aktiver miljøet
+Aktiver miljøet:
 
 ```shell
 conda activate <navn på ditt miljø>
@@ -125,7 +125,7 @@ conda activate <navn på ditt miljø>
 
 ### Noen pakker er "blokkert for gruppepolicy"
 
-Ta gjerne kontakt med oss om du opplever at pakker du forsøker å installere feiler med følgende melding
+[Ta gjerne kontakt med oss](https://svv-saga.slack.com/archives/C03LGD7TM5Z) om du opplever at pakker du forsøker å installere feiler med følgende melding:
 
 ```
 Dette programmet er blokkert for gruppepolicy. Kontakt systemansvarlig for mer informasjon.

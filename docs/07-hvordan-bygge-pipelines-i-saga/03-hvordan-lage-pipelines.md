@@ -1,12 +1,12 @@
 # Hvordan lage pipelines i Airflow
 
-Pipelines i Airflow bygges opp som en "Directed Acyclic Graph" (DAG). Litt forenklet så er en DAG en graf med bokser og piler, som i eksempelet under. Boksene representerer steg i en pipeline, og pilene viser avhengighetene mellom stegene.
+Pipelines i Airflow bygges opp som en "Directed Acyclic Graph" (DAG). DAG er en graf med bokser og piler, som i eksempelet under. Boksene representerer steg i en pipeline, og pilene viser avhengighetene mellom stegene.
 
-![Et eksempel på en pipeline i Airflow](img/pipeline_example.webp)
+![Et eksempel på en pipeline i Airflow](img/visualisering-av-pipeline-i-airflow.png)
 
 ## Hvordan ser DAGs ut?
 
-En DAG er bare et Python-script som slutter på `-dag.py`. De forskjellige stegene i en DAG kalles tasks i Airflow. Det er to måter å lage tasks på, med operatorer eller med @task-annotasjon. Begge måtene blir vist i eksempelet under. Dersom du har et steg som skal kjøre Python-kode, bør @task-annotasjon benyttes. Ellers, for mer spesialiserte oppgaver, finnes det en del ferdige operatorer man kan benytte i sine tasks.
+En DAG er et Python-script som slutter på `.dag.py`. De forskjellige stegene i en DAG kalles tasks i Airflow. Det er to måter å lage tasks på, med operatorer eller med @task-annotasjon. Begge måtene blir vist i eksempelet under. Dersom du har et steg som skal kjøre Python-kode, bør @task-annotasjon benyttes. Ellers, for mer spesialiserte oppgaver, finnes det en del ferdige operatorer man kan benytte i sine tasks.
 
 En enkel DAG kan for eksempel se slik ut:
 
@@ -103,7 +103,7 @@ def pipeline(_):
 
     create_e6_stenginger >> stenginger_e6_i_2021
 
-# default_args blir sendt videre til både tasks og templates, f.eks. i SQL
+# default_args blir sendt videre til både tasks og templates, eksempelvis i SQL
 default_args = {
     'dataset': 'examples',
 }
@@ -111,13 +111,18 @@ default_args = {
 dag = make_pipeline(pipeline, default_args=default_args)
 ```
 
+<<<<<<< HEAD
 Dersom du vil se flere eksempler, har vi [flere eksempler i GitHub-repoet](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil/examples).
 
-Dersom du vil lære mer om hvordan DAGs fungerer, har [vi skrevet om dette her.](#hvordan-er-dags-bygd-opp)
+# Dersom du vil lære mer om hvordan DAGs fungerer, har [vi skrevet om dette her.](#hvordan-er-dags-bygd-opp)
+
+Dersom du vil lære mer om [hvordan DAGs fungerer, har vi skrevet om dette.](#hvordan-er-dags-bygd-opp)
+
+> > > > > > > 82b3990 (Fixed spelling and added new illustration of pipeline)
 
 ## Hva nå?
 
-Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `-dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. Koden til alle [Yggdrasil sine DAGs kan sees her.](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil)
+Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `-dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. [Du kan også se hvordan koden til alle Yggdrasil sine DAGs ser ut.](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil)
 
 Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/).
 
@@ -145,7 +150,7 @@ Det settes opp directory-mapping fra din lokale mappe til Airflow:
 - DAGs vil leses fra `build/`-mappa
 - Plugins leses fra `plugins/`-mappa
 
-For å kjøre Airflow CLI-kommandoer kan du bruke `npm run airflow <args>` (krever `docker-compose`), f.eks.:
+For å kjøre Airflow CLI-kommandoer kan du bruke `npm run airflow <args>` (krever `docker-compose`), eksempelvis:
 
 ```shell
 npm run airflow dags list
@@ -157,7 +162,7 @@ Hvis du har Airflow kjørende lokalt, kan du kjøre dine DAGs der.
 
 1. For å slippe å gjenta deg selv kan du sette path til DAGen som en variabel: `export DAG=dags/yggdrasil/oppetid/hendelser-dag.py`
 1. Hvis du har en Dockerfile som skal bygges:
-   1. Velg deg en unik tag, f.eks. ditt brukernavn på 6 bokstaver, og sett denne: `export TAG=geisag`
+   1. Velg deg en unik tag, eksempelvis ditt brukernavn på 6 bokstaver, og sett denne: `export TAG=geisag`
    1. Kjør `python build_docker_images.py $TAG $DAG`
 1. Kjør `python build_dags.py [--tag $TAG] STM $DAG`. Dette vil bygge DAGen (evt. med docker-image-tag) og erstatte templated fields. Du kan se resultatet i `build/`.
 1. Din lokale Airflow vil automatisk plukke opp DAGs som ligger i `build/`-mappa.
@@ -191,7 +196,7 @@ Det finnes et utall ferdiglagde operatorer. Noen nyttige eksempler er:
 - [BigQueryInsertJobOperator](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/bigquery.html)
 - [SimpleHttpOperator](https://airflow.apache.org/docs/apache-airflow-providers-http/stable/operators.html#simplehttpoperator)
 
-[Se flere innebygde operators her](https://airflow.apache.org/docs/apache-airflow/stable/concepts/operators.html) og [operators for GCP her.](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/index.html)
+Det finnes eksempler på [innebygde operators](https://airflow.apache.org/docs/apache-airflow/stable/concepts/operators.html) og [operators for GCP](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/index.html).
 
 ### Make_pipeline
 
@@ -236,7 +241,7 @@ Vi bruker [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stabl
 
 ### Hooks
 
-Operatorer er som regel bygd opp av [Hooks](https://airflow.apache.org/docs/apache-airflow/stable/concepts/connections.html#hooks): et høynivå interface mot en integrasjon. Man kan f.eks. bruke en hook for å forenkle tilkobling til BigQuery hvis man vil skrive ren Python-kode (uten `BigQueryInsertJobOperator`):
+Operatorer er som regel bygd opp av [Hooks](https://airflow.apache.org/docs/apache-airflow/stable/concepts/connections.html#hooks): et høynivå interface mot en integrasjon. Man kan eksempelvis bruke en hook for å forenkle tilkobling til BigQuery hvis man vil skrive ren Python-kode (uten `BigQueryInsertJobOperator`):
 
 ```python
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
@@ -266,7 +271,7 @@ DAGer i `dags/` vil prosesseres ved bygging, og resultatet vil bli plassert i `b
 
 - `__PROJECT_ID__` og enkelte andre variabler byttes rått ut med sine respektive verdier, se lenger ned for flere variabler.
 - `make_pipeline` får injected `project_id`, `project_base` og `team`, som brukes til å bygge opp `SagaContext` som sendes til pipelinen.
-- `make_pipeline` vil sette en del `default_args` for DAGen, som bl.a. håndterer tilgangsstyring mot GCP og automatisk Slack alerts til teamets Slack-kanal
+- `make_pipeline` vil sette en del `default_args` for DAGen, som blant annet håndterer tilgangsstyring mot GCP og automatisk Slack alerts til teamets Slack-kanal
   - Som standard vil alle kall til GCP gjøres med prosjektets service account `project-service-account@<projectId>.iam.gserviceaccount.com`.
   - `default_args` vil også sendes inn some `user_defined_macros` hvis man bruker [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stable/templates-ref.html).
 - Andre argumenter til `make_pipeline` vil bli sendt videre til [`DAG`-konstruktøren](https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/models/dag/index.html#airflow.models.dag.DAG).
@@ -275,11 +280,11 @@ DAGer i `dags/` vil prosesseres ved bygging, og resultatet vil bli plassert i `b
 
 Her er en liste over våre egne variabler du kan bruke:
 
-| Variabel           | Beskrivelse                                                                                                                                                                                                                                                |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `__PROJECT_ID__`   | Erstattes med STM project ID for PRer, og PROD project ID ved merging til main. Leses fra `config.yml` i DAGens mappe.                                                                                                                                     |
-| `__IMAGE__`        | Dersom det finnes en Dockerfile i DAGens mappe, vil denne settes til imaget, inkludert tag, f.eks. `europe-docker.pkg.dev/saga-artifacts/docker/dags/yggdrasil/oppetid:pr-13`.                                                                             |
-| `__PROJECT_BASE__` | Project ID uten saga-prefix, miljø eller random suffix. F.eks. for `saga-oppetid-stm-6cgp` vil `project_base` være `oppetid`. Vil matche navnet på katalogen som DAGene ligger i. Brukes for å referere til f.eks. service accounts eller GCP connections. |
+| Variabel           | Beskrivelse                                                                                                                                                                                                                                               |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `__PROJECT_ID__`   | Erstattes med STM project ID for PRer, og PROD project ID ved merging til main. Leses fra `config.yml` i DAGens mappe.                                                                                                                                    |
+| `__IMAGE__`        | Dersom det finnes en Dockerfile i DAGens mappe, vil denne settes til imaget, inkludert tag, eksempelvis. `europe-docker.pkg.dev/saga-artifacts/docker/dags/yggdrasil/oppetid:pr-13`.                                                                      |
+| `__PROJECT_BASE__` | Project ID uten saga-prefix, miljø eller random suffix. For `saga-oppetid-stm-6cgp` vil `project_base` være `oppetid`. Vil matche navnet på katalogen som DAGene ligger i. Brukes for å referere til for eksempel service accounts eller GCP connections. |
 
 Disse vil erstattes automatisk i DAGen.
 
@@ -308,12 +313,10 @@ Deretter må man sende med denne service accounten som `impersonation_chain` i G
 
 ### Scheduling og `start_date`
 
-Les https://airflow.apache.org/docs/apache-airflow/1.10.1/scheduler.html.
-
-Relevant:
+[Vi anbefaler at du leser om scheduler i airflow først](https://airflow.apache.org/docs/apache-airflow/1.10.1/scheduler.html).
 
 Når du lager en DAG kan du bestemme hvor ofte den skal kjøres ved å definere et `schedule_interval`.
-Man kan bruke et [CRON-uttrykk](https://crontab.guru/), eller noen keywords, f.eks.:
+Man kan bruke et [CRON-uttrykk](https://crontab.guru/), eller noen keywords, eksempelvis:
 
 - `None`: Kan bare trigges manuelt
 - `@once`: Kjøres kun automatisk ved første deploy
@@ -321,28 +324,28 @@ Man kan bruke et [CRON-uttrykk](https://crontab.guru/), eller noen keywords, f.e
 
 `make_pipelines` har en default `start_date` satt til **2022-01-01**. Dette har som regel lite å si, med mindre din pipeline eksplisitt benytter [`data_interval_start` og/eller `data_interval_end`](https://airflow.apache.org/docs/apache-airflow/stable/faq.html#what-does-execution-date-mean). Dersom du likevel ønsker å overskrive `start_date`, kan du sende med dette som argument til `make_pipeline`.
 
-Gotchas:
+Noen ting å være klar over:
 
 - `start_date` bør ikke endres; dette vil skape en helt ny DAG.
 - Hvis `start_date` er i fortiden, vil Airflow kjøre én gang for nyeste intervall. Dersom man ønsker å ta igjen alle kjøringer siden `start_date` kan man sette `catchup=True`.
 - DAGen vil kjøre ved slutten av hvert intervall.
-- DAGen vil kjøre øyeblikkelig hvis `start_date` er i fortiden. Ønsker man å vente med første kjøring til midnatt, sett f.eks. `start_date` til dagens dato og `schedule_interval='@daily'`.
+- DAGen vil kjøre øyeblikkelig hvis `start_date` er i fortiden. Ønsker man å vente med første kjøring til midnatt, sett for eksempel `start_date` til dagens dato og `schedule_interval='@daily'`.
 
 ## Python modules
 
-Hvis du ønsker å splitte opp koden i flere Python-filer, må du importere dem basert på hvor de ligger i `dags/`, f.eks. hvis de ligger i `utils.py` i samme mappe som en DAG i `dags/yggdrasil/oppetid`:
+Hvis du ønsker å splitte opp koden i flere Python-filer, må du importere dem basert på hvor de ligger i `dags/`, eksempelvis hvis de ligger i `utils.py` i samme mappe som en DAG i `dags/yggdrasil/oppetid`:
 
 ```python
 from yggdrasil.oppetid.utils import do_stuff
 ```
 
-Mer info om best practices for modules: https://airflow.apache.org/docs/apache-airflow/stable/modules_management.html#best-practices-for-module-loading.
+[Apache airflow har skrevet om beste praksis for modules](https://airflow.apache.org/docs/apache-airflow/stable/modules_management.html#best-practices-for-module-loading).
 
 ## Docker og CloudRunOperator
 
-Du kan bruke Docker for å kjøre tasks basert på egne images, f.eks. dbt. Vi har laget funksjonalitet som automatisk bygger og deployer en Dockerfile i samme mappe som en dag.
+Du kan bruke Docker for å kjøre tasks basert på egne images, eksempelvis dbt. Vi har laget funksjonalitet som automatisk bygger og deployer en Dockerfile i samme mappe som en dag.
 
-- Lag en Dockerfile i samme mappe som DAGen, f.eks.:
+- Lag en Dockerfile i samme mappe som DAGen:
 
 ```dockerfile
 FROM europe-docker.pkg.dev/saga-artifacts/docker-public/dbt-base
@@ -367,11 +370,11 @@ ENTRYPOINT $CMD
     )
 ```
 
-Merk: Imaget som bygges automatisk vil bli sendt inn som `default_args.image` og bli med i alle `CloudRunOperators`; hvis man ønsker å bruke et annet image må man spesifisere dette via `image`-parameter til `CloudRunOperator`.
+**Merk**: Imaget som bygges automatisk vil bli sendt inn som `default_args.image` og bli med i alle `CloudRunOperators`; hvis man ønsker å bruke et annet image må man spesifisere dette via `image`-parameter til `CloudRunOperator`.
 
 ### Colima
 
-Hvis du bruker container runtimen Colima på macOS eller Linux isteden for feks Docker Desktop, må du eksportere dens socket slik at bibliotek som pythonbiblioteket `docker` finner koblingen til den.
+Hvis du bruker container runtimen Colima på macOS eller Linux isteden for eksempelvis Docker Desktop, må du eksportere socket slik at bibliotek (som pythonbiblioteket) `docker` finner koblingen til den.
 
 ```
 export DOCKER_HOST=unix://$HOME/.colima/default/docker.sock

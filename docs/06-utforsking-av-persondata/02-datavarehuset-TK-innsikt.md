@@ -1,15 +1,15 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Greit å vite om datavarehuset TK innsikt sin database
+# Datavarehuset TK innsikt
 
-Her går vi gjennom litt praktisk informasjon om datavarehuset TK innsikt sin database som kan vere greit å vite om.
+Her går vi gjennom praktisk informasjon om datavarehuset TK innsikt sin database som kan være greit å vite om.
 
 ## Databasens inndeling
 
-Det er TK Innsikt som forvalter databasen, men vi har fått utdelt en del skjemaer som tilhører Saga. Et skjema i Oracle er et område hvor man kan legge egne tabeller og views. Det ligner altså litt på et datasett i Google BigQuery. Et skjema eies alltid av en databasebruker og har det samme navnet som denne brukeren. Derfor finner man de ulike skjemaene under "Other users" i Oracle SQL Developer.
+Det er TK Innsikt som forvalter databasen, men vi har fått utdelt en del skjemaer som tilhører Saga. Et skjema i Oracle er et område hvor man kan legge inn egne tabeller og views. Det ligner litt på et datasett i Google BigQuery. Et skjema eies alltid av en databasebruker og har det samme navnet som denne brukeren. Derfor finner man de ulike skjemaene under "Other users" i Oracle SQL Developer.
 
-Figuren under viser grovt sett hvordan databasen er oppdelt. Fra før av finnes det en del skjemaer hvor eksisterende data ligger. I tillegg har Saga fått et område hvor det ligger skjemaer både for ulike fyrtårnteams og per bruker.
+Figuren under viser grovt sett hvordan databasen er oppdelt. Fra før av finnes det en del skjemaer hvor eksisterende data ligger. I tillegg har Saga fått et område hvor det ligger skjemaer både for ulike fyrtårn-teams og per bruker.
 
 ![Datavarehuset TK innsikt sin database](./img/tkinnsikt.drawio.png)
 
@@ -46,7 +46,7 @@ Høyreklikk på tabellen du vil dele, og velg `Privileges -> Grant`. Deretter ve
   </TabItem>
 </Tabs>
 
-Når du så har gitt teamets databasebruker lesetilgang til relevante tabeller må du logge inn som teamets bruker, og deretter opprette tabellen i teamets skjema ved å gjøre én av de følgende:
+Når du så har gitt teamets databasebruker lesetilgang til relevante tabeller må du logge inn som teamets bruker, og deretter opprette tabellen i teamets skjema ved å gjøre et av de følgende stegene:
 
 <Tabs>
   <TabItem value="sql" label="SQL" default>
@@ -71,7 +71,7 @@ Finn tabellen du skal kopiere i sidemenyen og høyreklikk på den. Velg deretter
 
 ## Ytelse på spørringer
 
-Enkelte views kan ta lang tid å spørre mot, f.eks. fordi de fletter sammen flere tabeller. Dersom du opplever at dette gjør det vanskelig å kjøre de spørringer du trenger i din analyse er det mulig å lage en tabell basert på viewet. Dette kan gjøre at spørringer går en del raskere fordi man slipper å joine fra de opprinnelige tabellene i hver spørring. Vær oppmerksom på at dette også har ulemper der den største er at dataene i din lokale tabell ikke automatisk blir oppdatert. I tillegg vil det ta opp uforholdsmessig mye plass om alle brukere av databasen skal lage egne kopier fra alle views.
+Enkelte views kan ta lang tid å spørre mot, fordi de for eksempel fletter sammen flere tabeller. Hvis du opplever at det er vanskelig å kjøre spørringer du trenger i din analyse, er det mulig å lage en tabell basert på viewet. Dette kan gjøre at spørringer går en del raskere fordi man slipper å joine fra de opprinnelige tabellene i hver spørring. Vær oppmerksom på at dette også har ulemper. Den største er at dataene i din lokale tabell ikke automatisk blir oppdatert. I tillegg vil det ta opp mye plass om alle brukere av databasen skal lage egne kopier fra alle views.
 
 For å lage en slik kopi, kjør følgende SQL:
 

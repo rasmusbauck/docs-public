@@ -1,4 +1,4 @@
-import VideoPlayer from "../../src/components/DocsComponents/VideoPlayer.tsx"
+import VideoPlayer from '../../src/components/DocsComponents/VideoPlayer.tsx'
 
 # Kom i gang med SQL Developer
 
@@ -8,7 +8,7 @@ De fleste velegnede programmer for utforsking og analyse krever at man klarer å
 
 Om du ikke allerede har en VDI kan dette bestilles gjennom POB. Husk å be om rollen "utvikler" når du bestiller din VDI om den skal brukes til analyse eller utviklingsformål, da dette gir tilgang til å installere blant annet Jupyter Notebooks.
 
-Vet du at du har behov for spesiell software kan det være lurt å bestille en TOU-bruker først som sist, da det kan ta litt tid før det kommer på plass. I mellomtiden vil det ofte gi mening å begynne med Oracle SQL Developer uansett, da dette er en enkel måte å utforske databasen og dine tilganger.
+Vet du at du har behov for spesiell programvare kan det være lurt å bestille en TOU-bruker først som sist, da det kan ta litt tid før det kommer på plass. I mellomtiden vil det ofte gi mening å begynne med Oracle SQL Developer uansett, da dette er en enkel måte å utforske databasen og dine tilganger.
 
 ## Bestilling av SQL Developer
 
@@ -26,11 +26,11 @@ VDI-ene kan ikke nå databasen som standard. For å få tilgang må det åpnes e
 
 **Dersom du har Linux**: Logg inn i din VDI. Åpne opp terminalen og kjør kommandoen `hostname`. Navnet på din VDI vil så bli skrevet i terminalen.
 
-## Førstegangs oppsett av SQL Developer
+## Førstegangsoppsett av SQL Developer
 
-Når du har fått SQL Developer på din VDI og brannmuråpningen er på plass kan du koble til datavarehuset DataHub sin database. Åpne SQL Developer, og deretter velg "Create a Connection Manually". Tilkoblingsinformasjonen kan du finne på wiki:
+Når du har fått SQL Developer på din VDI og brannmuråpningen er på plass, kan du koble til datavarehuset DataHub sin database. Åpne SQL Developer, og deretter velg "Create a Connection Manually".
 
-[Gå til wiki-siden (må være på SVV-nett eller i VDI)](https://www.vegvesen.no/wiki/x/NReACw)
+[Tilkoblingsinformasjonen kan du finne på vegvesenet sin wiki](https://www.vegvesen.no/wiki/x/NReACw). Du må være på SVV-nett eller i VDI.
 
 **OBS**: Når du har koblet til databasen er det viktig at du endrer passordet ditt. Dette gjør du ved å høyreklikke på databasen i sidemenyen og velge "Reset Password".
 
@@ -47,9 +47,13 @@ SELECT owner, view_name FROM all_views
 WHERE owner NOT IN ('SYS', 'SYSTEM', 'APEX_200200', 'ORDS_METADATA', 'GSMADMIN_INTERNAL', 'XDB', 'WMSYS', 'CTXSYS', 'ORDSYS', 'ORDDATA', 'MDSYS');
 ```
 
-<VideoPlayer source="//storage.googleapis.com/saga-docs-prod_public-assets/Basic-bruk-av-sql-developer.webm" type="video/webm" width="720px" />
+<VideoPlayer
+  source="//storage.googleapis.com/saga-docs-prod_public-assets/Basic-bruk-av-sql-developer.webm"
+  type="video/webm"
+  width="720px"
+/>
 
-**Viktig**: Det kan ofte være dårlig ytelse ved spørringer mot et view, spesielt dersom viewet fletter sammen flere tabeller. Derfor kan det være lurt å opprette en tabell fra viewet, og heller gjøre spørringer mot denne tabellen. Dette kan du [lese om i neste kapittel](/utforsking-av-persondata/greit-%C3%A5-vite-om-datavarehuset#ytelse-p%C3%A5-sp%C3%B8rringer).
+**Viktig**: Det kan ofte være dårlig ytelse ved spørringer mot et view, spesielt dersom viewet fletter sammen flere tabeller. Derfor kan det være lurt å opprette en tabell fra viewet, og heller gjøre spørringer mot denne tabellen. Dette kan du [lese om i neste kapittel](/utforsking-av-persondata/datavarehuset-TK-innsikt#ytelse-på-spørringer).
 
 ## Andre tips for SQL Developer
 
