@@ -113,6 +113,8 @@ Når du er klar til å lage en DAG starter du med å opprette en fil som slutter
 
 Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/).
 
+🚧 [Pipelines i STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/)
+
 ## Testing
 
 En grunnleggende test av alle DAGs vil bli kjørt i PRs og før deploy, som vil sjekke at det er gyldig Python-kode og imports. Disse kan kjøres med
