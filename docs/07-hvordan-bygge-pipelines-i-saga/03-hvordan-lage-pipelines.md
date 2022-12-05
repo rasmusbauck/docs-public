@@ -26,7 +26,7 @@ Vi har laget et GitHub-repo [saga-pipelines](https://github.com/svvsaga/saga-pip
 
 Du kan se ditt teams kjørende pipelines her:
 
-🚧 [Pipelines i STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/)
+🚧 [Pipelines i STM](https://airflow-stm.saga.vegvesen.no) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://airflow.saga.vegvesen.no)
 
 ## Hvordan er pipelines bygd opp i Airflow?
 
@@ -150,9 +150,9 @@ Dersom du vil lære mer om [hvordan DAGs fungerer, har vi skrevet om dette](#byg
 
 Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `.dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. [Du kan også se hvordan koden til alle Yggdrasil sine DAGs ser ut.](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil)
 
-Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/).
+Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://airflow-stm.saga.vegvesen.no). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://airflow.saga.vegvesen.no).
 
-🚧 [Pipelines i STM](https://bba5347ed7ee4031a042db3c1ddc8410-dot-europe-west1.composer.googleusercontent.com/) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://317df360d876468ba7f411edbec769e1-dot-europe-west1.composer.googleusercontent.com/)
+🚧 [Pipelines i STM](https://airflow-stm.saga.vegvesen.no) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://airflow.saga.vegvesen.no)
 
 ## Testing
 
