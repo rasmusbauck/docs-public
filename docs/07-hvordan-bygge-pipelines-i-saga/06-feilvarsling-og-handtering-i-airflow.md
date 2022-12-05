@@ -69,18 +69,18 @@ slack:
 
 ## Kjøring av DAGs og tasks på nytt
 
-Hvis man ønsker å kjøre en pipeline eller en oppgave på nytt (feilet eller vellykket), kan man gjøre dette ved å "cleare" status for DAGen eller oppgaven:
-
-![Kjøre en DAG pånytt](img/rerun_dag.webp)
+Hvis man ønsker å kjøre en pipeline eller en oppgave på nytt (feilet eller vellykket), kan man gjøre dette ved å "cleare" status for DAGen eller oppgaven.
 
 For å kjøre en DAG på nytt:
 
 1. Velg DAG-kjøringen ved å klikke på kolonnen som vist
 1. Velg "Clear existing tasks"
 
-![Kjøre en task pånytt](img/rerun_task.webp)
+![Kjøre en DAG pånytt](img/rerun_dag.webp)
 
 For å kjøre en task på nytt:
 
 1. Velg den lille firkanten som representerer den gitte tasken for den gitte kjøringen
 1. Velg "Clear"
+
+![Kjøre en task pånytt](img/rerun_task.webp)
