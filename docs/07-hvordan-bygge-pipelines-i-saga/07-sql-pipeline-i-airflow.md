@@ -1,4 +1,16 @@
-# Veglenker med fylke (med DBT)
+# Eksempel på SQL-pipeline i Airflow
+
+Vi har laget en eksempelpipeline som henter et utvalg veglenker fra NVDB og legger til fylke og region for disse, basert på veglenkenes geometri.
+
+Denne pipelinen finnes i to utgaver, en hvor vi bruker [dbt](https://docs.getdbt.com) og en uten.
+
+## Veglenker med fylke (uten dbt)
+
+[Du kan se kildekoden til pipelinen her.](https://github.com/svvsaga/saga-pipelines/blob/main/dags/yggdrasil/examples/veglenker_med_fylke.dag.py)
+
+Denne pipelinen bruker operatorene `BigQueryCreateEmptyDatasetOperator` og `BigQueryInsertJobOperator` for å sørge for at to datasett `internal` og `curated` blir opprettet, og utfører deretter noen spørringer for å lage data og sammenstille disse.
+
+## Veglenker med fylke (med dbt)
 
 [Du kan se kildekoden til pipelinen her.](https://github.com/svvsaga/saga-pipelines/blob/main/dags/yggdrasil/examples/veglenker_med_fylke-dbt.dag.py)
 
@@ -6,7 +18,7 @@ Denne pipelinen gjør det samme som den rene SQL-varianten, men bruker [dbt](htt
 
 [Her kan du lese mer om dbt.](https://docs.getdbt.com)
 
-## Hvordan bruker man dbt i Airflow?
+### Hvordan bruker man dbt i Airflow?
 
 For å få automatisk autentisering mot sitt prosjekt kan man bruke `CloudRunOperator` for å kjøre dbt. Det krever at man har:
 
