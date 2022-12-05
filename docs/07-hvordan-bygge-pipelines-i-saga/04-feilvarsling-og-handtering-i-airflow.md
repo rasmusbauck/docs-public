@@ -21,7 +21,7 @@ def pipeline(_):
   ...
 
 # Vil gjelde for alle tasks
-make_pipeline('my_pipeline', pipeline, retries=3)
+make_pipeline(pipeline, retries=3)
 ```
 
 Retries kan også settes på task-nivå:
@@ -43,7 +43,7 @@ def pipeline(_):
     retries=3
   )
 
-make_pipeline('my_pipeline', pipeline)
+make_pipeline(pipeline)
 ```
 
 ## Alerts til Slack

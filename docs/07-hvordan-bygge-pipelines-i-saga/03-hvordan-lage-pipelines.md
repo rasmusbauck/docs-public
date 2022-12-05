@@ -258,7 +258,7 @@ default_args = {
 }
 
 
-make_pipeline("stenginger", pipeline, schedule_interval='@daily', default_args=default_args)
+make_pipeline(pipeline, schedule_interval='@daily', default_args=default_args)
 ```
 
 Vi bruker [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stable/templates-ref.html) for å inkludere SQL-filer og sette inn variabler i disse.
@@ -286,7 +286,7 @@ def pipeline(context: SagaContext):
 
     copy_table()
 
-make_pipeline("copy-stenginger", pipeline)
+make_pipeline(pipeline)
 ```
 
 ## Automatikk og variabler
