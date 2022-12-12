@@ -133,9 +133,13 @@ def pipeline(_):
 
     create_e6_stenginger >> stenginger_e6_i_2021
 
-# default_args blir sendt videre til både tasks og templates, eksempelvis i SQL
+# default_args blir sendt videre til både tasks og templates,
+# eksempelvis i SQL
 default_args = {
-    'dataset': 'examples',
+    'dataset': 'examples'
+
+    # project_id er automatisk tilgjengelig på lik linje med andre
+    # default_args, basert på prosjektkonfigurasjonen i config.yml
 }
 
 make_pipeline(pipeline, default_args=default_args)

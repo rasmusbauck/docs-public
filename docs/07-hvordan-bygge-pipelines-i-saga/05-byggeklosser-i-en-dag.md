@@ -120,8 +120,8 @@ from yggdrasil.oppetid.utils import do_stuff
 DAGer i `dags/` vil prosesseres ved bygging, og resultatet vil bli plassert i `build/`. Følgende transformasjoner gjøres:
 
 - `__PROJECT_ID__` og enkelte andre variabler byttes rått ut med sine respektive verdier, se lenger ned for flere variabler.
-- `make_pipeline` får injected `project_id`, `project_base` og `team`, som brukes til å bygge opp `SagaContext` som sendes til pipelinen.
-- `make_pipeline` vil sette en del `default_args` for DAGen, som blant annet håndterer tilgangsstyring mot GCP og automatisk Slack alerts til teamets Slack-kanal
+- `make_pipeline` får automatisk sendt inn argumentene `project_id`, `project_base` og `team`, som brukes til å bygge opp `SagaContext` som sendes til pipelinen.
+- `make_pipeline` vil automatisk sette en del `default_args` for DAGen. F.eks `project_id`, nødvendige parametere for tilgangsstyring mot GCP og Slack alerts til teamets Slack-kanal
   - Som standard vil alle kall til GCP gjøres med prosjektets service account `project-service-account@<projectId>.iam.gserviceaccount.com`.
   - `default_args` vil også sendes inn some `user_defined_macros` hvis man bruker [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stable/templates-ref.html).
 - Andre argumenter til `make_pipeline` vil bli sendt videre til [`DAG`-konstruktøren](https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/models/dag/index.html#airflow.models.dag.DAG).
