@@ -48,8 +48,33 @@
 }
 
 /* Custom modifications to the landing page*/
+
 .information {
   max-width: 100%;
+  font-size: 20px;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-right: 6rem;
+}
+
+.information .hero__title {
+  font-size: 48px;
+}
+
+.information ul {
+  margin-bottom: 1.2rem;
+}
+
+.information ul li {
+  margin-bottom: 0.8rem;
+}
+
+.information ul a {
+  color: #000;
+  text-decoration: underline;
 }
 
 [data-theme='light'] .button--secondary {
@@ -63,16 +88,19 @@
   color: rgba(0, 0, 0);
 }
 
-.information {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
+  .landing-page-figure-img {
+    content: url("/img/illustrasjon-data-dus.min.svg")
+  }
+
+@media (max-width: 1440px) {
+}
+
+@media (max-width: 800px) {
 }
 
 .landing-page {
   display: flex;
-  padding-top: 8rem;
+  padding-top: 2rem;
 }
 
 .footer {
@@ -105,33 +133,69 @@
   padding: 0 1rem 1rem 1rem;
 }
 
+@media (min-width: 1440px) {
+  .lp-container{
+      max-width: 1400px;
+  }
+}
+
 /* For smaller screen sizes*/
 @media (max-width: 1440px){
   .landing-page {
-    flex-wrap: wrap;
     padding-top: 3rem;
     padding-left: 0rem;
+    flex-direction: column
   }
 
   .animation {
     margin-left: -3.8rem;
   }
+
+  .landing-page-figure {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .landing-page-figure-img {
+    width: 600px;
+    margin-right: 6rem;
+    margin-top: -8rem;
+    z-index: -1;
+  }
 }
 
 @media (max-width: 800px){
-  .animation {
+  .information {
+    padding-left: 0rem;
+    margin-right: 0;
+  }
+  .container {
+    padding-left: 1rem;
+  }
+
+  .information .hero__title {
+    font-size: 32px;
+    margin-bottom: 2rem;
+  }
+
+  .information .hero__title br {
     display: none;
   }
 
-  .information {
-    padding-left: 0rem;
-  }
-}
-  .container {
-    padding-left: 3rem;
+  .landing-page {
+    flex-direction: column
   }
 
-/* Animation */
-.animation {
-  z-index: -1;
+  .landing-page-figure {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .landing-page-figure-img {
+    max-width: 450px;
+    right: -3rem;
+    margin: 0;
+    position: absolute;
+    content: url("/img/blob.min.svg")
+  }
 }

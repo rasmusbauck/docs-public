@@ -66,14 +66,6 @@ const config = {
           },
         ],
       },
-      footer: {
-        style: 'dark',
-        copyright: `En tjeneste fra Statens vegvesen </br> ${new Date().getFullYear()}`,
-        logo: {
-          alt: 'Statens Vegvesen',
-          src: 'img/svv-logo-bw.svg',
-        },
-      },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
