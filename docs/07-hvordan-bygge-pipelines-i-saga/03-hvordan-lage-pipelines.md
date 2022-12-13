@@ -59,7 +59,8 @@ def pipeline(context: SagaContext):
 
     print_world_task = print_world()
 
-    # Avhengigheter mellom tasks settes med ">>". Slik det står her vil ping skje først og deretter email.
+    # Avhengigheter mellom tasks settes med ">>".
+    # Slik det står her vil print_hello_task kjøre før print_world_task.
     print_hello_task >> print_world_task
 
 # Det er make_pipeline-funksjonen som faktisk oppretter DAG-en i Airflow.
@@ -85,7 +86,8 @@ def pipeline(_):
     def print_something(input):
         print(input)
 
-    # For taskflow vil rekkefølgen på kall bestemme avhengighetene. Altså vil hello() kjøre før print_something(..)
+    # For taskflow vil rekkefølgen på kall bestemme avhengighetene. 
+    # Slik det står her vil hello() kjøre før print_something(..).
     output = hello()
     print_something(output)
 
