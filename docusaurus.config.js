@@ -17,7 +17,7 @@ const config = {
   favicon: 'img/favicon.ico',
   organizationName: 'svvsaga',
   projectName: 'docs-public',
-  trailingSlash: false,
+  trailingSlash: true,
   markdown: {
     mermaid: true,
   },
