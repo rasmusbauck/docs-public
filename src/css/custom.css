@@ -195,7 +195,7 @@
     max-width: 450px;
     right: -3rem;
     margin: 0;
-    position: absolute;
+    position: fixed;
     content: url("/img/blob.min.svg")
   }
 }
