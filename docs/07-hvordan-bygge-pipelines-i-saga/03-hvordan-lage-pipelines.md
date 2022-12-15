@@ -49,7 +49,7 @@ from pipeline import SagaContext, make_pipeline
 def pipeline(context: SagaContext):
 
     # Tasks kan lages med operatorer
-    print_hello_task = BashOperator(task_id="hello", bash_command="echo hello")
+    print_hello_task = BashOperator(task_id="print_hello", bash_command="echo hello")
 
     # Eller med @task før en Python-funksjon
     @task()
