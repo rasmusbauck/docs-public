@@ -1,4 +1,3 @@
-
 # Testing og lokal kjøring av pipelines
 
 ## Testing
@@ -12,7 +11,24 @@ pytest test_dags.py
 
 Andre tester kan legges til i samme mappe som DAGen.
 
-## Kjøre Airflow lokalt
+## Kjøre en DAG lokalt
+
+Man kan kjøre en DAG lokalt på to ulike måter, enten ved å kjøre en DAG direkte eller via et lokalt Airflow-miljø.
+
+### Kjøre en DAG direkte
+
+For å kjøre en DAG direkte må man først ha satt opp en lokal Airflow-database:
+
+- Du må ha kjørt `./setup-python.sh` og `source activate.sh` for å ha riktige Python-pakker installert og aktivert.
+- Kjør `airflow db init`. Dette vil initialisere en lokal SQLite-database som trengs for å kjøre en DAG.
+
+Nå er du klar til å kjøre en DAG direkte. Vi har laget et wrapper-script du kan bruke som vil bygge og kjøre en DAG:
+
+`./test-dag.sh dags/<team>/<domene>/<dag>.dag.py`
+
+DAGen vil kjøre som din innloggede `gcloud`-bruker.
+
+### Kjøre Airflow lokalt
 
 Du kan kalle `./start-airflow.sh` for å kjøre opp Airflow lokalt (krever Docker og `docker-compose`).
 

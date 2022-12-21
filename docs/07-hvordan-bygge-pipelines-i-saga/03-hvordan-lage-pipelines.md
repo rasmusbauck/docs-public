@@ -12,7 +12,7 @@ graph TD
 	C --> E
   D(<u>Test DAGen lokalt</u>)
   click D "https://github.com/svvsaga/saga-pipelines#kj%C3%B8re-airflow-lokalt" _blank
-  E(Lag en pull request så DAGen kjører i <u>Saga Pipelines STM</u>) --> |Yggdrasil godkjenner din PR|F
+  E(Lag en pull request så DAGen kjører i <u>Saga Pipelines STM</u>) --> |PRen godkjennes av noen andre på teamet|F
   click E href "https://console.cloud.google.com/composer/environments/detail/europe-west1/saga-pipelines-stm-composer/dags?project=saga-pipelines-stm" _blank
   F(DAGen blir deployet til <u>Saga Pipelines PROD</u>)
   click F href "https://console.cloud.google.com/composer/environments/detail/europe-west1/saga-pipelines-prod-composer/dags?project=saga-pipelines-prod" _blank
@@ -86,7 +86,7 @@ def pipeline(_):
     def print_something(input):
         print(input)
 
-    # For taskflow vil rekkefølgen på kall bestemme avhengighetene. 
+    # For taskflow vil rekkefølgen på kall bestemme avhengighetene.
     # Slik det står her vil hello() kjøre før print_something(..).
     output = hello()
     print_something(output)
