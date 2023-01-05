@@ -17,7 +17,6 @@ TABLESAMPLE SYSTEM
   (1 PERCENT)
 ```
 
-
 ## Partisjonering
 
 For tabeller med store mengder data kan partisjonering benyttes for å samlokalisere data basert på et utvalg kolonner. Dette kan både ha en positivt effekt på pris og effektiviteten på spørringene da bare trenger å operere på deler av dataene.
@@ -32,7 +31,6 @@ FROM
 WHERE
   `from` > TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY)
 ```
-
 
 ## Gruppering og aggregering
 
@@ -118,20 +116,16 @@ GROUP BY
 
 Ofte inneholder datasett og deres tabeller duplikate rader som det er ønskelig å bli kvitt før videre analyser gjennomføres, for å unngå feil i beregninger eller forenkle spørringene som må gjøres. Ett slikt eksempel der dette kan være nyttig er i datasettet Målestasjoner, der målestasjoner kan opptre flere ganger i forskjellig versjon, f.eks. om de har endret navn. BigQuery har flere måter å fjerne disse duplikate radene på.
 
-Eksempelet under viser hvordan man kan bruke nøkkelordene `PARTITION BY` til å partisjonere utvalget rader på feltet `id`, og sortere innad i hver av disse partisjonene basert på `versjon`, vha. nøkkelordene `ORDER BY`. Slik vil de nyeste versjonene av målestasjonene komme først i partisjonen. Hver av radene i partisjonen blir så tildelt et radnummer med funksjonen `ROW_NUMBER()` før en ytre `SELECT` igjen bare tar vare på radene med `rowNumber = 1`, for å sikre at man ender med én rad per målestasjon. Dette vil være den utgaven av målestasjonen som har det høyeste versjonsnummeret.
+Eksempelet under viser hvordan man kan bruke nøkkelordene `QUALIFY`, `ROW_NUMBER()` og `PARTITION BY` til å partisjonere utvalget rader på feltet `id`, og sortere innad i hver av disse partisjonene basert på `versjon`, vha. nøkkelordene `ORDER BY`. Slik vil de nyeste versjonene av målestasjonene komme først i partisjonen, og siden vi bare tar første rad av hver partisjon, vil vi ende opp med alle de nyeste versjonene og ingen andre.
 
 ```sql
 SELECT
-  * EXCEPT (rowNumber)
-FROM
-  (SELECT
-     id,
-     versjon,
-     navn,
-     ROW_NUMBER() OVER (
-        PARTITION BY id
-        ORDER BY CAST(versjon AS INT) DESC) rowNumber
-    FROM `saga-vegvar-prod-znny.standardized.maalestasjoner`)
-WHERE
-  rowNumber = 1
+  id,
+  versjon,
+  navn
+FROM `saga-vegvar-prod-znny.standardized.maalestasjoner`
+QUALIFY ROW_NUMBER() OVER (
+  PARTITION BY id
+  ORDER BY CAST(versjon AS INT) DESC
+) = 1
 ```
