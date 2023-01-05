@@ -15,6 +15,23 @@ Vi har laget et repo [github-actions-public](https://github.com/svvsaga/github-a
 
 Det kommer stadig flere tilskudd, og hvis det er noe dere savner er det bare å ta kontakt på [#saga-support på Slack](https://vegvesen.slack.com/archives/C03LGD7TM5Z).
 
+## Sikkerhet
+
+En GitHub workflow kjører med [en del tilganger som uvedkommende ikke bør ha](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions). Vi har derfor skrudd på et krav om at bare actions og workflows fra følgende kilder er tillatt:
+
+- Alle repos under `svvsaga`-organisasjonen
+- GitHub sine egne actions
+- Actions fra verifiserte tredjeparter
+
+Dersom man ønsker å ta i bruk actions utenom disse, kan man forke repoet inn til `svvsaga` og bruke det derifra, f.eks.:
+
+```yaml
+# I stedet for:
+uses: tibdex/github-app-token@v1
+# Bruk (etter forking):
+uses: svvsaga/github-app-token@v1
+```
+
 ## `projects.config.json`
 
 Mange av våre GitHub Actions og Workflows forutsetter at man har lagt inn en `projects.config.json`-fil for prosjektet man jobber i, samt én `projects.config.json`-fil i roten av repoet, som beskriver teamets felles-prosjekt. Disse filene vil se ut som noe slikt:
@@ -104,7 +121,7 @@ jobs:
     # Når 'needs' er satt, vil ikke denne jobben kjøre for forrige jobb er ferdig, slik at outputs er tilgjengelige
     needs: create_release
     # Denne jobben har ikke egne steg, men refererer til en spesifikk versjon av en ferdig workflow på github-actions-public repo
-    uses: svvsaga/github-actions-public/.github/workflows/publish-terraform-plans.yml@v9.0.0
+    uses: svvsaga/github-actions-public/.github/workflows/publish-terraform-plans.yml@v20.0.0
     with:
       app_root: my-app
       release_id: ${{ needs.create_release.outputs.release_id }}
@@ -158,7 +175,7 @@ on:
 
 jobs:
   deploy:
-    uses: svvsaga/github-actions-public/.github/workflows/apply-terraform-plan.yml@v9.0.1
+    uses: svvsaga/github-actions-public/.github/workflows/apply-terraform-plan.yml@v20.0.0
     with:
       ref: ${{ inputs.ref }}
       environment: ${{ inputs.environment }}
