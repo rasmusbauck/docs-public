@@ -26,7 +26,7 @@ Vi har laget et GitHub-repo [saga-pipelines](https://github.com/svvsaga/saga-pip
 
 Du kan se ditt teams kjørende pipelines her:
 
-🚧 [Pipelines i STM](https://airflow-stm.saga.vegvesen.no) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://airflow.saga.vegvesen.no)
+🚧 [Pipelines i STM](https://pipelines-stm.saga.vegvesen.no) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://pipelines.saga.vegvesen.no)
 
 ## Hvordan er pipelines bygd opp i Airflow?
 
@@ -166,9 +166,9 @@ Les mer detaljert om [skedulering av pipelines](05-byggeklosser-i-en-dag.md#sche
 
 Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `.dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. Du kan også se hvordan koden til alle [Yggdrasil sine DAGs](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil) ser ut.
 
-Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://airflow-stm.saga.vegvesen.no). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://airflow.saga.vegvesen.no).
+Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://pipelines-stm.saga.vegvesen.no). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://pipelines.saga.vegvesen.no).
 
-🚧 [Pipelines i STM](https://airflow-stm.saga.vegvesen.no) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://airflow.saga.vegvesen.no)
+🚧 [Pipelines i STM](https://pipelines-stm.saga.vegvesen.no) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://pipelines.saga.vegvesen.no)
 
 ## Tilbakemeldinger
 
