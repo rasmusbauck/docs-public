@@ -138,6 +138,32 @@ Her er en liste over våre egne variabler du kan bruke:
 
 Disse vil erstattes automatisk i DAGen.
 
+### Hemmeligheter
+
+Hemmeligheter skal aldri ligge i klartekst i kode. En god løsning på dette er Secret Manager som kjører i alle team sine prosjekter. Airflow kan enkelt settes opp til å hente hemmeligheter derfra ved hjelp av en `SecretsManagerHook`, som kan slå de opp med navn (`secret-name` i eksempelet under).
+
+```python
+from airflow.utils.log.secrets_masker import mask_secret
+from airflow.providers.google.cloud.hooks.secret_manager import SecretsManagerHook
+
+def pipeline(context: SagaContext):
+
+    @task
+    def fetch_secret_from_secret_manager():
+
+        secret_manager = SecretsManagerHook(impersonation_chain=context.impersonation_chain)
+
+        # Slå opp hemmelighet.
+        secret = secret_manager.get_secret(secret_id='secret-name', project_id=context.project_id)
+
+        # Masker den, i tilfelle den blir logget.
+        mask_secret(secret)
+```
+
+Eksempelet viser også hvordan funksjonen `mask_secret(secret)` kan brukes for å påse at hemmeligheten blir maskert om den ved et uhell skulle bli logget mens DAGen kjører.
+
+Ta kontakt med Yggdrasil om du lurer på hvordan du kan vedlikeholde hemmeligheter i ditt team sine prosjekter.
+
 ### Annen service account og tilgangsstyring
 
 Hvis du ønsker å bruke en annen service account i ditt prosjekt, må du manuelt tildele `roles/iam.serviceAccountTokenCreator`-rollen for denne SAen til Pipeline-prosjektets project SA:
