@@ -61,13 +61,13 @@ Vi bruker [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stabl
 
 [Vi anbefaler at du leser om scheduler i airflow først](https://airflow.apache.org/docs/apache-airflow/1.10.1/scheduler.html).
 
-Når du lager en DAG kan du bestemme hvor ofte den skal kjøres ved å definere et `schedule_interval`.
-Man kan bruke et [CRON-uttrykk](https://crontab.guru/), eller noen keywords, eksempelvis:
+Når du lager en DAG kan du bestemme hvor ofte den skal kjøres ved å definere et `schedule_interval`. Dette kan gjøres på mange måter. Her er noen eksempler:
 
 - `None`: Kan bare trigges manuelt
 - `@once`: Kjøres kun automatisk ved første deploy
 - `@hourly`: Kjøres hver time
 - `@daily`: Kjøres daglig
+- [CRON-uttrykk](https://crontab.guru/): Feks `5 4 * * *`: Det femte minutt, den fjerde timen (04:05), hver dag
 
 `make_pipelines` har en default `start_date` satt til **2022-01-01**. Dette har som regel lite å si, med mindre din pipeline eksplisitt benytter [`data_interval_start` og/eller `data_interval_end`](https://airflow.apache.org/docs/apache-airflow/stable/faq.html#what-does-execution-date-mean). Dersom du likevel ønsker å overskrive `start_date`, kan du sende med dette som argument til `make_pipeline`.
 

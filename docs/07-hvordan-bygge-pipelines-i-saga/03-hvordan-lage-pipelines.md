@@ -160,6 +160,7 @@ Dersom du vil at din pipeline skal kjøre regelmessig kan man sende det med i de
 - `@once`: Kjøres kun automatisk ved første deploy
 - `@hourly`: Kjøres hver time
 - `@daily`: Kjøres daglig
+- [CRON-uttrykk](https://crontab.guru/)
 
 Les mer detaljert om [skedulering av pipelines](05-byggeklosser-i-en-dag.md#scheduling-og-start_date).
 
