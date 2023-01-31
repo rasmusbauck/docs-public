@@ -47,7 +47,7 @@ def pipeline(context: SagaContext):
 # Disse variablene kan brukes inne i SQL-filer med Jinja
 default_args = {
     "dataset": "curated",
-    "nvdbConsumerDataset": "saga-nvdb-consumer-prod-2p3w.consumer"
+    "nvdbDataset": "saga-nvdb-prod-vlmh.consumer"
     # Flere variabler vil automatisk settes inn her, se docs nedenfor
 }
 
