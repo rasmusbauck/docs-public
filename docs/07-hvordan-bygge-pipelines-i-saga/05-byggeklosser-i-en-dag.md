@@ -28,9 +28,9 @@ from airflow import models
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from pipeline import SagaContext, make_pipeline
 
-
 # Pipelinen defineres i en funksjon som får inn en `SagaContext` med nyttig info
 def pipeline(context: SagaContext):
+
     create_corrected_stenginger = BigQueryInsertJobOperator(
         task_id="create_corrected_stenginger",
         configuration={
@@ -81,15 +81,19 @@ Noen ting å være klar over:
 
 ### Hooks
 
-Operatorer er som regel bygd opp av [Hooks](https://airflow.apache.org/docs/apache-airflow/stable/concepts/connections.html#hooks): et høynivå interface mot en integrasjon. Man kan eksempelvis bruke en hook for å forenkle tilkobling til BigQuery hvis man vil skrive ren Python-kode (uten `BigQueryInsertJobOperator`):
+Operatorer er som regel bygd opp av [Hooks](https://airflow.apache.org/docs/apache-airflow/stable/concepts/connections.html#hooks): et høynivå interface mot en integrasjon.
+
+#### BigQuery
+
+Hooks kan feks brukes for å forenkle tilkobling til BigQuery hvis man vil skrive ren Python-kode (uten `BigQueryInsertJobOperator`):
 
 ```python
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 from airflow.decorators import task
 from pipeline import SagaContext, make_pipeline
 
-
 def pipeline(context: SagaContext):
+
     @task
     def copy_table():
         hook = BigQueryHook(impersonation_chain=context.impersonation_chain)
@@ -97,10 +101,48 @@ def pipeline(context: SagaContext):
 
         bq.copy_table(
             source_project_dataset_table=f"{context.project_id}.curated.stenginger",
-            destination_project_dataset_table=f"{context.project_id}.curated.stenginger_copy",
-        )
+            destination_project_dataset_table=f"{context.project_id}.curated.stenginger_copy")
 
     copy_table()
+
+make_pipeline(pipeline)
+```
+
+En kan også bruke BigQuery-klienten direkte fra et steg om man feks ønsker resultatet returnert som en pandas dataframe.
+
+```python
+from airflow.decorators import task
+from pipeline import make_pipeline, SagaContext
+from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
+
+def pipeline(context: SagaContext):
+
+    @task
+    def run_query():
+        hook = BigQueryHook(impersonation_chain=context.impersonation_chain)
+        client = hook.get_client(project_id=context.project_id, location="EU")
+        df = client.query(some_query).to_dataframe()
+
+make_pipeline(pipeline)
+```
+
+#### Google Cloud Storage (GCS)
+
+Det finnes også hooks som tilbyr enklere lesing og skriving til og fra GCS.
+
+```python
+from airflow.decorators import task
+from pipeline import make_pipeline, SagaContext
+from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
+
+def pipeline(context: SagaContext):
+
+    @task
+    def download_file():
+        filename = 'file.csv'
+        gcs_hook = GoogleCloudStorageHook(impersonation_chain=context.impersonation_chain)
+        gcs_hook.download(f'svv-{context.project_id}', filename)
+        content = pd.read_csv(filename, header=None)
 
 make_pipeline(pipeline)
 ```
@@ -168,7 +210,7 @@ Ta kontakt med Yggdrasil om du lurer på hvordan du kan vedlikeholde hemmelighet
 
 Hvis du ønsker å bruke en annen service account i ditt prosjekt, må du manuelt tildele `roles/iam.serviceAccountTokenCreator`-rollen for denne SAen til Pipeline-prosjektets project SA:
 
-```
+```shell
 gcloud iam service-accounts add-iam-policy-binding my-service-account@my-project.iam.gserviceaccount.com \
   --project my-project \
   --member project-service-account@saga-pipelines-stm.iam.gserviceaccount.com \

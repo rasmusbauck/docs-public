@@ -49,7 +49,7 @@ npm run airflow dags list
 
 Hvis du bruker container runtimen Colima på macOS eller Linux isteden for eksempelvis Docker Desktop, må du eksportere socket slik at bibliotek (som pythonbiblioteket) `docker` finner koblingen til den.
 
-```
+```shell
 export DOCKER_HOST=unix://$HOME/.colima/default/docker.sock
 ```
 

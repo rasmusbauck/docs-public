@@ -104,6 +104,7 @@ from airflow.providers.google.cloud.operators.bigquery import \
 from pipeline import make_pipeline
 
 def pipeline(_):
+
     create_e6_stenginger = BigQueryInsertJobOperator(
         task_id="create_e6_stenginger",
         configuration={
@@ -147,7 +148,7 @@ default_args = {
 make_pipeline(pipeline, default_args=default_args)
 ```
 
-Dersom du vil se flere eksempler, har vi [flere eksempler i GitHub-repoet](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil/examples).
+Det finnes [flere eksempler i GitHub-repoet svvsaga/saga-pipelines](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil/examples).
 
 Dersom du vil lære mer om [hvordan DAGs fungerer, har vi skrevet om dette](./05-byggeklosser-i-en-dag.md).
 
