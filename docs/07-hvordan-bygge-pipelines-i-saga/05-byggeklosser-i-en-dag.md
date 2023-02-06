@@ -57,7 +57,7 @@ make_pipeline(pipeline, schedule_interval='@daily', default_args=default_args)
 
 Vi bruker [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stable/templates-ref.html) for å inkludere SQL-filer og sette inn variabler i disse.
 
-### Scheduling og `start_date`
+### Scheduling, dataintervall og `start_date`
 
 [Vi anbefaler at du leser om scheduler i airflow først](https://airflow.apache.org/docs/apache-airflow/1.10.1/scheduler.html).
 
@@ -69,19 +69,41 @@ Når du lager en DAG kan du bestemme hvor ofte den skal kjøres ved å definere 
 - `@daily`: Kjøres daglig
 - [CRON-uttrykk](https://crontab.guru/): Feks `5 4 * * *`: Det femte minutt, den fjerde timen (04:05), hver dag
 
-`make_pipelines` har en default `start_date` satt til **2022-01-01**. Dette har som regel lite å si, med mindre din pipeline eksplisitt benytter [`data_interval_start` og/eller `data_interval_end`](https://airflow.apache.org/docs/apache-airflow/stable/faq.html#what-does-execution-date-mean). Dersom du likevel ønsker å overskrive `start_date`, kan du sende med dette som argument til `make_pipeline`.
+#### Dataintervall og tidspunkt for kjøring
 
-Noen ting å være klar over:
+Airflow ble opprinnelig laget som en løsning for ETL, "Extract, Transform, Load". En vanlig strategi i slike løsninger er å "oppsummere data" for en periode, feks etter et endt døgn. Derfor har Airflow et konsept om et "dataintervall", gitt av variablene `data_interval_start` og `data_interval_end`, som representerer intervallet en pipelines kjøring er ment å håndtere dataene for. For en pipeline som er satt til å kjøre daglig vil tidspunkt for pipelinens faktiske kjøring være etter dataintervallet, for å kunne prosessere data for det foregående døgnet.
 
-- `start_date` bør ikke endres; dette vil skape en helt ny DAG.
+En pipeline satt til å kjøre `@daily` vil for eksempel kunne få følgende kjøremønster:
+
+1. Dataintervall: `[2023-01-01T00:00:00 Europe/Oslo, 2023-01-02T00:00:00 Europe/Oslo)`<br/>
+   Faktisk kjøretidspunkt: `2023-01-02T00:00:00 Europe/Oslo`
+
+1. Dataintervall: `[2023-01-02T00:00:00 Europe/Oslo, 2023-01-03T00:00:00 Europe/Oslo)`<br/>
+   Faktisk kjøretidspunkt: `2023-01-03T00:00:00 Europe/Oslo`
+
+1. Dataintervall: `[2023-01-03T00:00:00 Europe/Oslo, 2023-01-04T00:00:00 Europe/Oslo)`<br/>
+   Faktisk kjøretidspunkt: `2023-01-04T00:00:00 Europe/Oslo`
+    
+1. osv
+
+Du kan les mer om dette i [Airflow-dokumentasjonen](https://airflow.apache.org/docs/apache-airflow/stable/faq.html#what-does-execution-date-mean).
+
+#### `start_date`
+
+`make_pipelines` setter `start_date` til **2022-01-01** som default. Dette representerer tidspunktet for når en pipeline "trer i kraft". Hvis dette er et tidspunkt i fremtiden vil ikke pipelinen skeduleres før dette tidspunktet nås. Om det er i fortiden, vil pipelinen regnes som aktiv umiddelbart, og den vil bli skedulert i henhold til sitt `schedule_interval`.
+
+`start_date` har som regel lite å si, med mindre du har tenkt å bruke Airflow sin funksjonalitet for backfill, som du kan gjøre ved å sette `catchup=True`. Det vil føre til at Airflow kjører pipelinen for alle dataintervaller opp til dagens dato, i henhold til dens `schedule_interval`.
+
+Dersom du likevel ønsker å overskrive `start_date`, kan du sende med dette som argument til `make_pipeline`. Noen ting å være klar over er da:
+
+- En endring i `start_date` vil skape en helt ny DAG. Som oftest er det ikke være nødvendig å endre på den.
 - Hvis `start_date` er i fortiden, vil Airflow kjøre én gang for nyeste intervall. Dersom man ønsker å ta igjen alle kjøringer siden `start_date` kan man sette `catchup=True`.
-- DAGen vil kjøre ved slutten av hvert intervall.
-- DAGen vil kjøre øyeblikkelig hvis `start_date` er i fortiden. Ønsker man å vente med første kjøring til midnatt, sett for eksempel `start_date` til dagens dato og `schedule_interval='@daily'`.
+- DAGen vil kjøre øyeblikkelig hvis `start_date` er i fortiden. Ønsker man å vente med første kjøring til midnatt, kan `start_date` settes til dagens dato og `schedule_interval='@daily'`.
 
 
 ### Hooks
 
-Operatorer er som regel bygd opp av [Hooks](https://airflow.apache.org/docs/apache-airflow/stable/concepts/connections.html#hooks): et høynivå interface mot en integrasjon.
+Operatorer er som regel bygd opp av [Hooks](https://airflow.apache.org/docs/apache-airflow/stable/concepts/connections.html#hooks) og tilbyr ofte høynivå grensesnitt mot en integrasjoner som kan gjøres fra Airflow. Hooks må benyttes fra steg (tasks) i en pipeline.
 
 #### BigQuery
 
@@ -185,6 +207,7 @@ Disse vil erstattes automatisk i DAGen.
 Hemmeligheter skal aldri ligge i klartekst i kode. En god løsning på dette er Secret Manager som kjører i alle team sine prosjekter. Airflow kan enkelt settes opp til å hente hemmeligheter derfra ved hjelp av en `SecretsManagerHook`, som kan slå de opp med navn (`secret-name` i eksempelet under).
 
 ```python
+from pipeline import SagaContext, make_pipeline
 from airflow.utils.log.secrets_masker import mask_secret
 from airflow.providers.google.cloud.hooks.secret_manager import SecretsManagerHook
 
@@ -200,6 +223,8 @@ def pipeline(context: SagaContext):
 
         # Masker den, i tilfelle den blir logget.
         mask_secret(secret)
+
+make_pipeline(pipeline)
 ```
 
 Eksempelet viser også hvordan funksjonen `mask_secret(secret)` kan brukes for å påse at hemmeligheten blir maskert om den ved et uhell skulle bli logget mens DAGen kjører.
