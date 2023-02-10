@@ -1,0 +1,29 @@
+name: Deploy PR to GCS
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy PR to GCS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build website
+        run: npm run build
+
+      - name: Setup Google Cloud SDK
+        uses: svvsaga/github-actions-public/setup-gcloud@v20.1.1
+        with:
+          app_root: ${{ env.WORKING_DIRECTORY }}
+          environment: PROD
+
+      - name: Deploy to GCS
+        run: gsutil cp build/* gs://saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
