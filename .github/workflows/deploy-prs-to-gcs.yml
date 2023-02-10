@@ -35,3 +35,13 @@ jobs:
       - name: Deploy to GCS
         run: |
           gsutil cp -r build/* gs://saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
+
+      - name: Link to PR build of docs in comment
+        uses: svvsaga/actions-comment-pull-request@main
+        with:
+          message: |
+            Check how your changes worked out using this url:
+            
+            https://storage.googleapis.com/saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/intro/index.html
+
+            (Note: Deploying docusaurus sites to GCS like this ☝️ without a custom domain is not optimal, so your milage may vary using the link above. E.g. among other things, refresh of pages after navigating around the website does not work.)
