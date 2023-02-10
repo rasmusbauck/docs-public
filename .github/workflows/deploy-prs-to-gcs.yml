@@ -37,7 +37,7 @@ jobs:
           gsutil cp -r build/* gs://saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
 
       - name: Link to PR build of docs in comment
-        uses: svvsaga/actions-comment-pull-request@main
+        uses: thollander/actions-comment-pull-request@v2.3.1
         with:
           message: |
             Check how your changes worked out using this url:
