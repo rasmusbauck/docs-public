@@ -30,4 +30,4 @@ jobs:
 
       - name: Deploy to GCS
         run: |
-          gsutil cp build/* gs://saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
+          gsutil cp -r build/* gs://saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
