@@ -20,7 +20,11 @@ jobs:
         run: npm ci
 
       - name: Build website
-        run: npm run build
+        env:
+          URL: https://storage.googleapis.com
+          BASE_URL: /saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
+        run:
+          npm run build
 
       - name: Setup Google Cloud SDK
         uses: svvsaga/github-actions-public/setup-gcloud@v20.1.1

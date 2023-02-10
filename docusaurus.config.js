@@ -4,13 +4,14 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github')
 const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
+const url = process.env.URL || 'https://docs.saga.vegvesen.no'
 const baseUrl = process.env.BASE_URL || '/'
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Saga',
   tagline: 'Dataplattformen til Statens vegvesen',
-  url: 'https://docs.saga.vegvesen.no',
+  url: url,
   baseUrl: baseUrl,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
