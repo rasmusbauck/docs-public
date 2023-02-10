@@ -7,6 +7,9 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     name: Deploy PR to GCS
     runs-on: ubuntu-latest
     steps:
