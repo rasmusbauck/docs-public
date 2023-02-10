@@ -22,7 +22,7 @@ jobs:
       - name: Setup Google Cloud SDK
         uses: svvsaga/github-actions-public/setup-gcloud@v20.1.1
         with:
-          app_root: ${{ env.GITHUB_WORKSPACE }}
+          app_root: ./
           environment: PROD
 
       - name: Deploy to GCS
