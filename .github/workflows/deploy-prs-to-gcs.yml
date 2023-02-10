@@ -22,8 +22,9 @@ jobs:
       - name: Setup Google Cloud SDK
         uses: svvsaga/github-actions-public/setup-gcloud@v20.1.1
         with:
-          app_root: ${{ env.WORKING_DIRECTORY }}
+          app_root: ${{ env.GITHUB_WORKSPACE }}
           environment: PROD
 
       - name: Deploy to GCS
-        run: gsutil cp build/* gs://saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
+        run: |
+          gsutil cp build/* gs://saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/
