@@ -45,4 +45,4 @@ jobs:
             
             https://storage.googleapis.com/saga-docs-prod_public-pr/pr-${{github.event.pull_request.number}}/intro/index.html
 
-            (Note: Deploying docusaurus sites to GCS like this ☝️ without a custom domain is not optimal, so your milage may vary using the link above. E.g. among other things, refresh of pages after navigating around the website does not work.)
+            _(Note: Deploying docusaurus sites to GCS like this ☝️ without a custom domain is not optimal, so your milage may vary using the link above. E.g. among other things, refresh of pages after navigating around the website does not work.)_
