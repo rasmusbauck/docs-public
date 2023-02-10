@@ -8,8 +8,9 @@ on:
 jobs:
   deploy:
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: read
+      pull-requests: write
+      id-token: write
     name: Deploy PR to GCS
     runs-on: ubuntu-latest
     steps:
