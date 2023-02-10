@@ -71,7 +71,7 @@ Når du lager en DAG kan du bestemme hvor ofte den skal kjøres ved å definere 
 
 #### Dataintervall og tidspunkt for kjøring
 
-Airflow ble opprinnelig laget som en løsning for ETL, "Extract, Transform, Load". En vanlig strategi i slike løsninger er å "oppsummere data" for en periode, feks etter et endt døgn. Derfor har Airflow et konsept om et "dataintervall", gitt av variablene `data_interval_start` og `data_interval_end`, som representerer intervallet en pipelines kjøring er ment å håndtere dataene for. For en pipeline som er satt til å kjøre daglig vil tidspunkt for pipelinens faktiske kjøring være etter dataintervallet, for å kunne prosessere data for det foregående døgnet.
+Airflow ble opprinnelig laget som en løsning for ETL, "Extract, Transform, Load". En vanlig strategi i slike løsninger er å "oppsummere data" for en periode (batch), feks etter et endt døgn. Derfor har Airflow et konsept om et "dataintervall", gitt av variablene `data_interval_start` og `data_interval_end`, som representerer intervallet en pipelines kjøring er ment å håndtere dataene for. For en pipeline som er satt til å kjøre daglig vil tidspunkt for pipelinens faktiske kjøring være etter dataintervallet, for å kunne prosessere data for det foregående døgnet.
 
 En pipeline satt til å kjøre `@daily` vil for eksempel kunne få følgende kjøremønster:
 
