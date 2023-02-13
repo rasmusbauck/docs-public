@@ -100,6 +100,41 @@ Dersom du likevel ønsker å overskrive `start_date`, kan du sende med dette som
 - Hvis `start_date` er i fortiden, vil Airflow kjøre én gang for nyeste intervall. Dersom man ønsker å ta igjen alle kjøringer siden `start_date` kan man sette `catchup=True`.
 - DAGen vil kjøre øyeblikkelig hvis `start_date` er i fortiden. Ønsker man å vente med første kjøring til midnatt, kan `start_date` settes til dagens dato og `schedule_interval='@daily'`.
 
+#### Lese ut datovariabler i kode
+
+Å lese ut datovariabler og andre variabler i din pipeline kan gjøres på flere måter.
+
+Om du bruker `@task`-annotasjonen for å lage stegene i din pipeline så blir disse kalt med en python dictionary som første argument. Denne inneholder alle airflow-variablene som er tilgjengelig.
+
+```python
+from pipeline import make_pipeline
+
+def pipeline(_):
+
+    @task
+    def some_task(**kwargs):
+        print("Variabelen 'data_interval_start' har denne verdien: " + str(kwargs["data_interval_start"]))
+        print("Variabelen 'data_interval_end' har denne verdien: " + str(kwargs["data_interval_end"]))
+
+make_pipeline(pipeline)
+```
+
+Om du bruker en operator som trenger tilgang på variabler kan de hentes ut vha. Jinja templates, på følgende måte.
+
+```python
+from pipeline import make_pipeline
+from airflow.operators.bash import BashOperator
+
+def pipeline(_):
+    print_data_interval =
+      BashOperator(
+        task_id="print_data_interval",
+        bash_command="echo start: '{{data_interval_start}}' slutt: '{{data_interval_end}}'")
+
+make_pipeline(pipeline)
+```
+
+Les mer om hvilke [variabler som er tilgjengelige i en pipeline i airflow-dokumentasjonen](https://airflow.apache.org/docs/apache-airflow/stable/templates-ref.html#variables).
 
 ### Hooks
 
