@@ -119,7 +119,9 @@ def pipeline(_):
 make_pipeline(pipeline)
 ```
 
-Om du bruker en operator som trenger tilgang på variabler kan de hentes ut vha. Jinja templates, på følgende måte.
+Om du bruker en operator som trenger tilgang på variabler kan de hentes ut vha. [Jinja templates](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html#jinja-templating). Hvilke felter i en operator du kan bruke Jinja templates i avhenger av operatorens implementasjon. Disse feltene er markert med `(templated)` i dokumentasjonen for [Aiflows innebygde operatorer](https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/operators/index.html) og [Google Cloud operatorene](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/index.html).
+
+Her ser du et eksempel på hvordan en `BashOperator` tar i bruk `{{data_interval_start}}`.
 
 ```python
 from pipeline import make_pipeline
