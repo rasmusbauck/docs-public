@@ -164,11 +164,46 @@ Dersom du vil at din pipeline skal kjøre regelmessig kan man sende det med i de
 
 Les mer detaljert om [skedulering av pipelines](05-byggeklosser-i-en-dag.md#scheduling-og-start_date).
 
-## Hva nå?
+## Kom i gang
 
-Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `.dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter oppetid, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. Du kan også se hvordan koden til alle [Yggdrasil sine DAGs](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil) ser ut.
+### Opprett DAG
+Når du er klar til å lage en DAG starter du med å opprette en fil som slutter på `.dag.py`. Denne må ligge i mappen `dags/<ditt team>/<domene>/`. Domene her betyr typisk det faglige domenet man jobber innenfor, og enda mer konkret skal domene-delen helst være lik som "domenedelen" av ditt GCP-prosjekt. Som et eksempel har Yggdrasil et prosjekt som heter `saga-oppetid[...]`, og derfor ligger tilhørende DAGs i `dags/yggdrasil/oppetid/`. Andre eksempler på domeneprosjekter: Trafikkdata, Oppetid, Trafikkapp, Reisetid, DDV, Vinterdrift. Du kan også se hvordan koden til alle [Yggdrasil sine DAGs](https://github.com/svvsaga/saga-pipelines/tree/main/dags/yggdrasil) ser ut.
 
-Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://pipelines-stm.saga.vegvesen.no). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://pipelines.saga.vegvesen.no).
+### Opprett config-fil
+For at din pipeline skal kjøre mot riktig domeneprosjekt må du opprette en config-fil med prosjekt-ID for STM og PROD. Denne skal ligge i samme mappe som domeneprosjektet, f.eks. `oppetid`, må hete `config.yml`, `config.yaml` eller `config.json` og kan se f.eks. slik ut:
+
+```yaml
+projects:
+  STM: saga-oppetid-stm-6cgp
+  PROD: saga-oppetid-prod-o6pj
+```
+
+Hvis man bare har ett prosjekt, kan man sette dette prosjektet for både STM og PROD:
+
+```yaml
+projects:
+  STM: saga-yggdrasil-analytics
+  PROD: saga-yggdrasil-analytics
+```
+
+### Kjør DAG-en lokalt
+Når du har skrevet en DAG, kan du enten kjøre denne lokalt eller lage en pull request (PR) i saga-pipelines-repoet. 
+
+For å kjøre den lokalt har vi laget et script som bygger og kjører en DAG. Den brukes slik:
+
+```sh
+./run-dag.sh dags/<team>/<domene>/<dag>.dag.py
+```
+
+:::info
+
+Dersom kommandoen over feilen me den feilmelding som nevner "no such table", prøv å kjøre kommandoen `airflow db init` først, og deretter prøv på nytt.
+
+:::
+
+### Lag pull request
+
+Når man lager en PR der vil DAG-en automatisk bli deployet til [STM](https://pipelines-stm.saga.vegvesen.no). Dette kan ta noen minutter. Når denne PR-en så blir flettet inn i main, blir DAG-en bli deployet til [PROD](https://pipelines.saga.vegvesen.no).
 
 🚧 [Pipelines i STM](https://pipelines-stm.saga.vegvesen.no) &nbsp;&nbsp; 🏁 [Pipelines i PROD](https://pipelines.saga.vegvesen.no)
 
